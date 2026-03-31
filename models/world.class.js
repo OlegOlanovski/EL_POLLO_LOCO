@@ -46,7 +46,7 @@ class World {
       movableObject.x,
       movableObject.y,
       movableObject.width,
-      movableObject.hight
+      movableObject.height
     );
   }
 }
