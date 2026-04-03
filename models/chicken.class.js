@@ -13,10 +13,13 @@ class Chicken extends MovableObject {
     this.loadImages(this.IMAGES_WALKING);
 
     this.x = 200 + Math.random() * 500; // Random x position for the chicken
+    this.speed = 0.15 + Math.random() * 0.5; // Random speed for the chicken
     this.animate();
   }
 
   animate() {
+    this.moveLeft();
+
     setInterval(() => {
       let i = this.currentImage % this.IMAGES_WALKING.length;
 
