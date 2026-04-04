@@ -16,6 +16,7 @@ class World {
   canvas;
   ctx;
   keyboard;
+
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
@@ -49,6 +50,12 @@ class World {
   }
 
   addToMap(movableObject) {
+    if (movableObject.otherDirection) {
+      this.ctx.save();
+      this.ctx.translate(movableObject.width, 0); // die x-Achse wird um die Breite des Objekts verschoben, damit das Objekt an der richtigen Stelle gespiegelt wird
+      this.ctx.scale(-1, 1);
+      movableObject.x = movableObject.x * -1;
+    }
     this.ctx.drawImage(
       movableObject.img,
       movableObject.x,
@@ -56,5 +63,9 @@ class World {
       movableObject.width,
       movableObject.height
     );
+    if (movableObject.otherDirection) {
+      movableObject.x = movableObject.x * -1;
+      this.ctx.restore();
+    }
   }
 }
