@@ -22,8 +22,19 @@ class MovableObject {
     arr.forEach((path) => {
       let img = new Image();
       img.src = path;
+      img.style = "transform: scaleX(-1)"; // Spiegeln des Bildes
       this.imageCache[path] = img;
     });
+  }
+
+  playAnimation(images) {
+    if (!images || images.length === 0) return;
+
+    let i = this.currentImage % images.length; // let i = 7 % 6; => 1, Rest 1
+    // let i = this.currentImage % 6; => 0,1,2,3,4,5,0,1,2,3,4,5,...
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentImage++;
   }
 
   moveRight() {
