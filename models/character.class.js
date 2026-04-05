@@ -22,15 +22,16 @@ class Character extends MovableObject {
 
   animate() {
     setInterval(() => {
-      if (this.world.keyboard.RIGHT) {
+      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.x += this.speed; // Move to the right
         this.otherDirection = false;
       }
-      if (this.world.keyboard.LEFT) {
+      if (this.world.keyboard.LEFT && this.x > 0) {
+        //  wenn x=0 ist, damit der Charakter nicht aus dem Bildschirm läuft
         this.x -= this.speed; // Move to the left
         this.otherDirection = true;
       }
-      this.world.camera_x = -this.x; // Kamera folgt dem Charakter
+      this.world.camera_x = -this.x + 100; // Kamera folgt dem Charakter
     }, 1000 / 60); // 60 frames per second
 
     setInterval(() => {
