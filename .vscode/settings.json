@@ -1,0 +1,17 @@
+{
+  "files.autoSave": "off",
+  "editor.formatOnSave": false,
+  "files.watcherExclude": {
+    "**/.git/**": true,
+    "**/.DS_Store": true,
+    "**/img/**": true,
+    "**/audio/**": true
+  },
+  "liveServer.settings.ignoreFiles": [
+    "**/.git/**",
+    "**/.DS_Store",
+    "**/img/**",
+    "**/audio/**"
+  ],
+  "liveServer.settings.wait": 1000
+}
