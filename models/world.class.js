@@ -10,8 +10,8 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
-    this.draw();
     this.setWorld();
+    this.draw();
   }
 
   setWorld() {
@@ -42,21 +42,26 @@ class World {
 
   addToMap(movableObject) {
     if (movableObject.otherDirection) {
-      this.ctx.save();
-      this.ctx.translate(movableObject.width, 0); // die x-Achse wird um die Breite des Objekts verschoben, damit das Objekt an der richtigen Stelle gespiegelt wird
-      this.ctx.scale(-1, 1);
-      movableObject.x = movableObject.x * -1;
+      this.flipImage(movableObject);
     }
-    this.ctx.drawImage(
-      movableObject.img,
-      movableObject.x,
-      movableObject.y,
-      movableObject.width,
-      movableObject.height
-    );
+    movableObject.draw(this.ctx); // zeichnet das Objekt auf die Leinwand
+
+    movableObject.drawFrame(this.ctx); // zeigt die Kollisionsboxen an
+
     if (movableObject.otherDirection) {
-      movableObject.x = movableObject.x * -1;
-      this.ctx.restore();
+      this.flipImageBack(movableObject);
     }
+  }
+
+  flipImage(movableObject) {
+    this.ctx.save();
+    this.ctx.translate(movableObject.width, 0);
+    this.ctx.scale(-1, 1);
+    movableObject.x = movableObject.x * -1;
+  }
+
+  flipImageBack(movableObject) {
+    movableObject.x = movableObject.x * -1;
+    this.ctx.restore();
   }
 }
