@@ -53,12 +53,14 @@ class MovableObject {
   }
 
   moveRight() {
-    console.log("Moving right");
+    this.x += this.speed; // Move to the right
   }
 
   moveLeft() {
-    setInterval(() => {
-      this.x -= this.speed; // Move to the left
-    }, 1000 / 60); // 60 frames per second
+    this.x -= this.speed; // Move to the left
+  }
+
+  jump() {
+    this.speedY = 30; // Jumping speed
   }
 }

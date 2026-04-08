@@ -35,33 +35,38 @@ class Character extends MovableObject {
 
   animate() {
     setInterval(() => {
+      this.walking_sound?.pause();
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-        this.x += this.speed; // Move to the right
+        this.moveRight();
         this.otherDirection = false;
+        this.walking_sound?.play();
       }
       if (this.world.keyboard.LEFT && this.x > 0) {
-        //  wenn x=0 ist, damit der Charakter nicht aus dem Bildschirm läuft
-        this.x -= this.speed; // Move to the left
+        this.moveLeft();
         this.otherDirection = true;
+        this.walking_sound?.play();
       }
-      if (this.world.keyboard.UP) {
-        this.speedY = 30; // Jumping speed
+      if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+        this.jump();
       }
       this.world.camera_x = -this.x + 100; // Kamera folgt dem Charakter
     }, 1000 / 60); // 60 frames per second
 
     setInterval(() => {
-if (this.isAboveGround()) {
+      if (this.isAboveGround()) {
         // Jumping animation
         this.playAnimation(this.IMAGES_JUMPING);
       } else {
-
-             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-             // Walking animation
-             this.playAnimation(this.IMAGES_WALKING);
-              }
-            }
+        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+          // Walking animation
+          this.playAnimation(this.IMAGES_WALKING);
+        }
+      }
     }, 50);
   }
-  jump() {}
+
+  jump() {
+    this.speedY = 30; // Jumping speed
+    this.walking_sound?.pause();
+  }
 }
