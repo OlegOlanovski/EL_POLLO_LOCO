@@ -39,11 +39,24 @@ class MovableObject {
     );
   }
   drawFrame(ctx) {
+    if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {    
+
     ctx.beginPath();
     ctx.lineWidth = '5';
     ctx.strokeStyle = 'blue';
     ctx.rect(this.x, this.y, this.width, this.height);
     ctx.stroke();
+    }
+  }  
+
+  // Überprüft, ob dieses Objekt mit einem anderen beweglichen Objekt kollidiert character.isColliding(enemy)
+  isColliding(movableObject) {
+    return (
+      this.x + this.width > movableObject.x &&
+      this.x < movableObject.x + movableObject.width &&
+      this.y + this.height > movableObject.y &&
+      this.y < movableObject.y + movableObject.height
+    );
   }
 
   /**
