@@ -25,7 +25,7 @@ class World {
         if (this.character.isColliding(enemy)) {
           this.character.hit();
 
-          console.log("Collision with Charakter, energy!" , this.character.energy);
+         
           
         }
       });

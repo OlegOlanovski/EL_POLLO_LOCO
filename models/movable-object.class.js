@@ -1,16 +1,10 @@
-class MovableObject {
-  x = 120;
-  y = 280;
-  img;
-  height = 150;
-  width = 100;
-  imageCache = [];
-  currentImage = 0;
+class MovableObject extends DrawableObjekt {
   speed = 0.15;
   otherDirection = false;
   speedY = 0;
   acceleration = 2.5;
   energy = 100;
+  lastHit = 0;
 
   applyGravity() {
     setInterval(() => {
@@ -25,20 +19,9 @@ class MovableObject {
     return this.y < 180;
   }
 
-  loadimage(path) {
-    this.img = new Image(); // this.img = document.getElementById("image") <img id="image" src>;
-    this.img.src = path;
-  }
+ 
 
-  draw(ctx) {
-      ctx.drawImage(
-      this.img,
-      this.x,
-      this.y,
-      this.width,
-      this.height
-    );
-  }
+
   drawFrame(ctx) {
     if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {    
 
@@ -64,8 +47,16 @@ class MovableObject {
     this.energy -= 5; 
     if (this.energy < 0) {
       this.energy = 0; // Energie kann nicht negativ sein
+    } else {
+      this.lastHit = new Date().getTime(); // Zeitstempel des letzten Treffers
     }
   }  
+
+  isHurt() {
+    let timePassed = new Date().getTime() - this.lastHit; // Zeit seit dem letzten Treffer
+    timePassed = timePassed / 1000; // Umwandeln in Sekunden
+    return timePassed < 1; // Wenn weniger als 1 Sekunde vergangen ist, gilt das Objekt als verletzt  
+  }
 
   isDead() {
     return this.energy === 0;
@@ -73,18 +64,7 @@ class MovableObject {
 
 
 
-  /**
-   *
-   * @param {Array} arr - ["img/1_character_pepe/1_walk/W-21.png", "img/1_character_pepe/1_walk/W-22.png", ...]
-   */
-  loadImages(arr) {
-    arr.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      img.style = "transform: scaleX(-1)"; // Spiegeln des Bildes
-      this.imageCache[path] = img;
-    });
-  }
+
 
   playAnimation(images) {
     if (!images || images.length === 0) return;
