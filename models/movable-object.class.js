@@ -22,16 +22,6 @@ class MovableObject extends DrawableObjekt {
  
 
 
-  drawFrame(ctx) {
-    if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {    
-
-    ctx.beginPath();
-    ctx.lineWidth = '5';
-    ctx.strokeStyle = 'blue';
-    ctx.rect(this.x, this.y, this.width, this.height);
-    ctx.stroke();
-    }
-  }  
 
   // Überprüft, ob dieses Objekt mit einem anderen beweglichen Objekt kollidiert character.isColliding(enemy)
   isColliding(movableObject) {
@@ -67,7 +57,7 @@ class MovableObject extends DrawableObjekt {
 
 
   playAnimation(images) {
-    if (!images || images.length === 0) return;
+    
 
     let i = this.currentImage % images.length; // let i = 7 % 6; => 1, Rest 1
     // let i = this.currentImage % 6; => 0,1,2,3,4,5,0,1,2,3,4,5,...
