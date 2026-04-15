@@ -42,6 +42,8 @@ IMAGES_HURT = [
 
   world;
   walking_sound = new Audio("audio/walking.mp3");
+  jumping_sound = new Audio("audio/jumping.mp3");
+  jumping_sound_timeout;
 
   constructor() {
     super().loadimage("img/2_character_pepe/2_walk/W-21.png");
@@ -94,5 +96,12 @@ IMAGES_HURT = [
   jump() {
     this.speedY = 30; // Jumping speed
     this.walking_sound?.pause();
+    this.jumping_sound.currentTime = 0;
+    this.jumping_sound.play();
+    clearTimeout(this.jumping_sound_timeout);
+    this.jumping_sound_timeout = setTimeout(() => {
+      this.jumping_sound.pause();
+      this.jumping_sound.currentTime = 0;
+    }, 1000);
   }
 }

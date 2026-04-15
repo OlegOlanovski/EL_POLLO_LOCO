@@ -2,6 +2,10 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let startScreen;
+let backgroundMusic = new Audio("audio/game-sound.mp3");
+
+backgroundMusic.loop = true;
+backgroundMusic.volume = 0.3;
 
 function init() {
   canvas = document.getElementById("canvas");
@@ -17,9 +21,17 @@ function startGame() {
   }
 
   startScreen?.classList.add("d-none");
+  playBackgroundMusic();
   world = new World(canvas, keyboard);
 
   console.log("My Character:", world.character);
+}
+
+function playBackgroundMusic() {
+  backgroundMusic.currentTime = 0;
+  backgroundMusic.play().catch((error) => {
+    console.log("Background music could not be played:", error);
+  });
 }
 
 window.addEventListener("keydown", (e) => {

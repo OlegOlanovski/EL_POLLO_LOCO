@@ -9,6 +9,8 @@ class World {
   coinStatusBar = new StatusbarCoin();
   bottleStatusBar = new StatusbarBottle();
   throwabbleObjects = [];
+  bottleAmount = 0;
+  maxBottles = 5;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -26,6 +28,7 @@ class World {
   run() {
     setInterval(() => { 
       this.checkCollisions();
+      this.checkBottleCollisions();
       this.checkThrowObjects();
     
       
@@ -34,11 +37,31 @@ class World {
   } 
 
   checkThrowObjects() {
-   if (this.keyboard.D) { // Wenn die Taste "D" gedrückt wird, wird ein neues Wurfobjekt erstellt
+   if (this.keyboard.D && this.bottleAmount > 0) { // Wenn die Taste "D" gedrückt wird, wird ein neues Wurfobjekt erstellt
       let throwableObject = new ThrowableObject(this.character.x + 50, this.character.y + 50); // Position des Wurfobjekts relativ zum Charakter
       this.throwabbleObjects.push(throwableObject); // Das neue Wurfobjekt wird zum Array hinzugefügt
+      this.bottleAmount--;
+      this.updateBottleStatusBar();
+    }
+
+    if (this.keyboard.D) {
       this.keyboard.D = false; // Verhindert, dass bei jedem Frame ein neues Objekt erstellt wird, solange die Taste gedrückt gehalten wird
     }
+  }
+
+  checkBottleCollisions() {
+    this.level.bottles.forEach((bottle, index) => {
+      if (this.character.isColliding(bottle)) {
+        this.level.bottles.splice(index, 1);
+        this.bottleAmount++;
+        this.updateBottleStatusBar();
+      }
+    });
+  }
+
+  updateBottleStatusBar() {
+    let percentage = (this.bottleAmount / this.maxBottles) * 100;
+    this.bottleStatusBar.setPercentage(percentage);
   }
 
   checkCollisions() { 
@@ -64,6 +87,7 @@ class World {
     this.addToMap(this.bottleStatusBar);
     this.ctx.translate(this.camera_x, 0); // Alle folgenden Objekte werden um die Kamera verschoben
     this.addObjectsToMap(this.level.clouds);
+    this.addObjectsToMap(this.level.bottles);
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwabbleObjects);
