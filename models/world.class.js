@@ -6,6 +6,8 @@ class World {
   keyboard;
   camera_x = 0;
   statusBar = new Statusbar();
+  coinStatusBar = new StatusbarCoin();
+  bottleStatusBar = new StatusbarBottle();
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -41,6 +43,8 @@ class World {
     this.ctx.translate(-this.camera_x, 0); // Alle folgenden Objekte werden zurückverschoben, damit die UI-Elemente an der richtigen Stelle bleiben
     //------- Space for fixed objects-------//
     this.addToMap(this.statusBar);
+    this.addToMap(this.coinStatusBar);
+    this.addToMap(this.bottleStatusBar);
     this.ctx.translate(this.camera_x, 0); // Alle folgenden Objekte werden um die Kamera verschoben
     this.addObjectsToMap(this.level.clouds);
     this.addToMap(this.character);
