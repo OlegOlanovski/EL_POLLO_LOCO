@@ -1,9 +1,22 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let startScreen;
 
 function init() {
   canvas = document.getElementById("canvas");
+  startScreen = document.getElementById("startScreen");
+}
+
+function startGame() {
+  if (world) {
+    return;
+  }
+  if (!canvas) {
+    init();
+  }
+
+  startScreen?.classList.add("d-none");
   world = new World(canvas, keyboard);
 
   console.log("My Character:", world.character);
@@ -27,6 +40,9 @@ window.addEventListener("keydown", (e) => {
   } 
   if (e.keyCode == 68) {
     keyboard.D = true;
+  }
+  if (e.keyCode == 13) {
+    startGame();
   }
 });
 

@@ -2,8 +2,47 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0;
 }
 
 canvas {
   background-color: black;
+  display: block;
+}
+
+.game-container {
+  position: relative;
+  width: 720px;
+  height: 480px;
+}
+
+.start-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-image: url("img/9_intro_outro_screens/start/startscreen_1.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.start-button {
+  margin-top: 24px;
+  padding: 12px 28px;
+  border: 2px solid #7a2f00;
+  border-radius: 8px;
+  background-color: #ffcf43;
+  color: #4a1d00;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.start-button:hover {
+  background-color: #ffb72b;
+}
+
+.d-none {
+  display: none;
 }
