@@ -16,7 +16,13 @@ class MovableObject extends DrawableObjekt {
   }
 
   isAboveGround() {
-    return this.y < 180;
+    if (this instanceof ThrowableObject) { // ThrowableObjects können nicht unter die Erde fallen
+      return true; 
+    } else {
+      return this.y < 180; // Andere Objekte sind über dem Boden, wenn y < 180
+    }
+
+   
   }
 
  
