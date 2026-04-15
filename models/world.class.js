@@ -11,6 +11,8 @@ class World {
   throwabbleObjects = [];
   bottleAmount = 0;
   maxBottles = 5;
+  coinAmount = 0;
+  maxCoins = 5;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -29,6 +31,7 @@ class World {
     setInterval(() => { 
       this.checkCollisions();
       this.checkBottleCollisions();
+      this.checkCoinCollisions();
       this.checkThrowObjects();
     
       
@@ -64,17 +67,52 @@ class World {
     this.bottleStatusBar.setPercentage(percentage);
   }
 
+  checkCoinCollisions() {
+    this.level.coins.forEach((coin, index) => {
+      if (this.character.isColliding(coin)) {
+        this.level.coins.splice(index, 1);
+        this.coinAmount++;
+        this.updateCoinStatusBar();
+      }
+    });
+  }
+
+  updateCoinStatusBar() {
+    let percentage = (this.coinAmount / this.maxCoins) * 100;
+    this.coinStatusBar.setPercentage(percentage);
+  }
+
   checkCollisions() { 
     this.level.enemies.forEach((enemy) => {
-    if (this.character.isColliding(enemy)) {
-      this.character.hit();
-      this.statusBar.setPercentage(this.character.energy); // Aktualisiert den Statusbalken entsprechend der aktuellen Energie des Charakters
+      if (enemy instanceof Chicken && enemy.dead) {
+        return;
+      }
 
-     
-      
-    }
-  });
-}
+      if (this.character.isColliding(enemy)) {
+        if (enemy instanceof Chicken && this.isJumpingOnEnemy(enemy)) {
+          this.killChicken(enemy);
+        } else {
+          this.character.hit();
+          this.statusBar.setPercentage(this.character.energy); // Aktualisiert den Statusbalken entsprechend der aktuellen Energie des Charakters
+        }
+      }
+    });
+  }
+
+  isJumpingOnEnemy(enemy) {
+    return this.character.speedY < 0 && this.character.y + this.character.height < enemy.y + enemy.height;
+  }
+
+  killChicken(chicken) {
+    chicken.die();
+    this.character.speedY = 20;
+    setTimeout(() => {
+      let index = this.level.enemies.indexOf(chicken);
+      if (index > -1) {
+        this.level.enemies.splice(index, 1);
+      }
+    }, 500);
+  }
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -88,6 +126,7 @@ class World {
     this.ctx.translate(this.camera_x, 0); // Alle folgenden Objekte werden um die Kamera verschoben
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.bottles);
+    this.addObjectsToMap(this.level.coins);
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwabbleObjects);
