@@ -22,6 +22,7 @@ h1 {
 canvas {
   background-color: black;
   display: block;
+  background-position: center;
 }
 
 .game-container {

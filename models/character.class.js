@@ -49,7 +49,6 @@ IMAGES_HURT = [
 ];
 
   world;
-  walking_sound = new Audio("audio/walking.mp3");
   jumping_sound = new Audio("audio/jumping.mp3");
   damage_sound = new Audio("audio/damage.mp3");
   attack_sound = new Audio("audio/attack.mp3");
@@ -70,16 +69,13 @@ IMAGES_HURT = [
 
   animate() {
     setInterval(() => {
-      this.walking_sound?.pause();
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
         this.otherDirection = false;
-        this.walking_sound?.play();
       }
       if (this.world.keyboard.LEFT && this.x > 0) {
         this.moveLeft();
         this.otherDirection = true;
-        this.walking_sound?.play();
       }
       if (this.world.keyboard.SPACE && !this.isAboveGround()) {
         this.jump();
@@ -115,7 +111,6 @@ IMAGES_HURT = [
 
   jump() {
     this.speedY = 30; // Jumping speed
-    this.walking_sound?.pause();
     this.jumping_sound.currentTime = 0;
     this.jumping_sound.play();
     clearTimeout(this.jumping_sound_timeout);

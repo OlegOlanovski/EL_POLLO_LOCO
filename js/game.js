@@ -20,6 +20,7 @@ function startGame() {
     init();
   }
 
+  initLevel();
   startScreen?.classList.add("d-none");
   playBackgroundMusic();
   world = new World(canvas, keyboard);
