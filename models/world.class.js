@@ -125,12 +125,6 @@ class World {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0); // Alle folgenden Objekte werden um die Kamera verschoben
     this.addObjectsToMap(this.level.backgroundObjects);
-    this.ctx.translate(-this.camera_x, 0); // Alle folgenden Objekte werden zurückverschoben, damit die UI-Elemente an der richtigen Stelle bleiben
-    //------- Space for fixed objects-------//
-    this.addToMap(this.statusBar);
-    this.addToMap(this.coinStatusBar);
-    this.addToMap(this.bottleStatusBar);
-    this.ctx.translate(this.camera_x, 0); // Alle folgenden Objekte werden um die Kamera verschoben
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.bottles);
     this.addObjectsToMap(this.level.coins);
@@ -138,6 +132,10 @@ class World {
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwabbleObjects);
     this.ctx.translate(-this.camera_x, 0); // Alle folgenden Objekte werden zurückverschoben, damit die UI-Elemente an der richtigen Stelle bleiben
+    //------- Space for fixed objects-------//
+    this.addToMap(this.statusBar);
+    this.addToMap(this.coinStatusBar);
+    this.addToMap(this.bottleStatusBar);
 
     // Draw() wird immer wieder aufgerufen.
     let self = this;
