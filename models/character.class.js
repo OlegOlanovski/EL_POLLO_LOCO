@@ -4,6 +4,12 @@ class Character extends MovableObject {
   y = 85;
   speed = 10;
   IMAGE_IDLE = "img/2_character_pepe/2_walk/W-21.png";
+  offset = {
+    top: 80,
+    bottom: 10,
+    left: 40,
+    right: 40,
+  };
 
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",

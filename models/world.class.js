@@ -102,9 +102,9 @@ class World {
   }
 
   isJumpingOnEnemy(enemy) {
-    let characterBottom = this.character.y + this.character.height;
-    let previousCharacterBottom = this.character.lastY + this.character.height;
-    let enemyTop = enemy.y;
+    let characterBottom = this.character.y + this.character.height - this.character.offset.bottom;
+    let previousCharacterBottom = this.character.lastY + this.character.height - this.character.offset.bottom;
+    let enemyTop = enemy.y + enemy.offset.top;
 
     return this.character.speedY < 0 && previousCharacterBottom <= enemyTop && characterBottom >= enemyTop;
   }

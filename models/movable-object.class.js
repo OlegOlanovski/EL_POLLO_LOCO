@@ -34,10 +34,10 @@ class MovableObject extends DrawableObjekt {
   // Überprüft, ob dieses Objekt mit einem anderen beweglichen Objekt kollidiert character.isColliding(enemy)
   isColliding(movableObject) {
     return (
-      this.x + this.width > movableObject.x &&
-      this.x < movableObject.x + movableObject.width &&
-      this.y + this.height > movableObject.y &&
-      this.y < movableObject.y + movableObject.height
+      this.x + this.width - this.offset.right > movableObject.x + movableObject.offset.left &&
+      this.x + this.offset.left < movableObject.x + movableObject.width - movableObject.offset.right &&
+      this.y + this.height - this.offset.bottom > movableObject.y + movableObject.offset.top &&
+      this.y + this.offset.top < movableObject.y + movableObject.height - movableObject.offset.bottom
     );
   }
 
