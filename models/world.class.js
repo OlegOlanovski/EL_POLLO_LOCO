@@ -33,17 +33,16 @@ class World {
       this.checkBottleCollisions();
       this.checkCoinCollisions();
       this.checkThrowObjects();
-    
-      
-     
-    }, 200);  
+    }, 1000 / 60);  
   } 
 
   checkThrowObjects() {
    if (this.keyboard.D && this.bottleAmount > 0) { // Wenn die Taste "D" gedrückt wird, wird ein neues Wurfobjekt erstellt
-      let throwableObject = new ThrowableObject(this.character.x + 50, this.character.y + 50); // Position des Wurfobjekts relativ zum Charakter
+      let bottleX = this.character.otherDirection ? this.character.x - 30 : this.character.x + 100;
+      let throwableObject = new ThrowableObject(bottleX, this.character.y + 50, this.character.otherDirection); // Position des Wurfobjekts relativ zum Charakter
       this.throwabbleObjects.push(throwableObject); // Das neue Wurfobjekt wird zum Array hinzugefügt
       this.bottleAmount--;
+      this.character.playFireSound();
       this.updateBottleStatusBar();
     }
 
@@ -57,6 +56,7 @@ class World {
       if (this.character.isColliding(bottle)) {
         this.level.bottles.splice(index, 1);
         this.bottleAmount++;
+        this.character.playBottleSound();
         this.updateBottleStatusBar();
       }
     });
@@ -72,6 +72,7 @@ class World {
       if (this.character.isColliding(coin)) {
         this.level.coins.splice(index, 1);
         this.coinAmount++;
+        this.character.playCoinSound();
         this.updateCoinStatusBar();
       }
     });
@@ -91,7 +92,8 @@ class World {
       if (this.character.isColliding(enemy)) {
         if (enemy instanceof Chicken && this.isJumpingOnEnemy(enemy)) {
           this.killChicken(enemy);
-        } else {
+        } else if (!this.character.isHurt()) {
+          this.character.playDamageSound();
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy); // Aktualisiert den Statusbalken entsprechend der aktuellen Energie des Charakters
         }
@@ -100,11 +102,16 @@ class World {
   }
 
   isJumpingOnEnemy(enemy) {
-    return this.character.speedY < 0 && this.character.y + this.character.height < enemy.y + enemy.height;
+    let characterBottom = this.character.y + this.character.height;
+    let previousCharacterBottom = this.character.lastY + this.character.height;
+    let enemyTop = enemy.y;
+
+    return this.character.speedY < 0 && previousCharacterBottom <= enemyTop && characterBottom >= enemyTop;
   }
 
   killChicken(chicken) {
     chicken.die();
+    this.character.playAttackSound();
     this.character.speedY = 20;
     setTimeout(() => {
       let index = this.level.enemies.indexOf(chicken);
