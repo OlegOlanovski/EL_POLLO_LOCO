@@ -135,7 +135,7 @@ class Endboss extends MovableObject {
   }
 
   patrol() {
-    if (this.isDead() || this.isHurt() || this.isAttacking()) {
+    if (this.isDead() || this.isHurt() || this.isAttacking()) { // Endboss bewegt sich nicht, wenn er tot, verletzt oder angreift
       return;
     }
 
