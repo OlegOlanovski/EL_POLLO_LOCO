@@ -42,6 +42,23 @@ canvas {
   background-position: center;
 }
 
+.win-screen {
+  background-image: url("img/You won, you lost/You Win A.png");
+}
+
+.final-screen {
+  z-index: 10;
+  background-color: black;
+}
+
+.lose-screen {
+  background-image: url("img/You won, you lost/You lost.png");
+}
+
+.game-over-screen {
+  background-image: url("img/You won, you lost/Game Over.png");
+}
+
 .start-button {
   margin-top: 24px;
   padding: 12px 28px;

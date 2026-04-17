@@ -3,6 +3,7 @@ class Character extends MovableObject {
   height = 240;
   y = 85;
   speed = 10;
+  hurtDuration = 0.4;
   IMAGE_IDLE = "img/2_character_pepe/2_walk/W-21.png";
   offset = {
     top: 80,

@@ -3,14 +3,17 @@ class Endboss extends MovableObject {
   width = 250;
   y = 50;
   dead = false;
-  speed = 3;
+  speed = 5;
   startX = 2500;
-  patrolDistance = 250;
+  patrolDistance = 450;
   isMovingForward = true;
   attackDistance = 130;
   world;
   panic_sound = new Audio("audio/panic.mp3");
   hasPlayedPanicSound = false;
+  isActive = false;
+  hasStartedPatrol = false;
+  patrolStartDelay = 2000;
   offset = {
     top: 60,
     bottom: 20,
@@ -65,11 +68,22 @@ class Endboss extends MovableObject {
 
   animate() {
     setInterval(() => {
+      this.activateEndboss();
+      if (!this.isActive) {
+        return;
+      }
       this.checkPanicSound();
+      if (!this.hasStartedPatrol) {
+        return;
+      }
       this.patrol();
     }, 1000 / 60);
 
     setInterval(() => {
+      if (!this.isActive || !this.hasStartedPatrol) {
+        return;
+      }
+
       if (this.isDead()) {
         this.dead = true;
         this.playAnimation(this.IMAGES_DEAD);
@@ -81,6 +95,19 @@ class Endboss extends MovableObject {
         this.playAnimation(this.IMAGES_WALKING);
       }
     }, 200);
+  }
+
+  activateEndboss() {
+    if (!this.isActive && this.isVisibleOnScreen()) {
+      this.isActive = true;
+      this.startPatrolAfterDelay();
+    }
+  }
+
+  startPatrolAfterDelay() {
+    setTimeout(() => {
+      this.hasStartedPatrol = true;
+    }, this.patrolStartDelay);
   }
 
   checkPanicSound() {

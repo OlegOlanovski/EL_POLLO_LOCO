@@ -14,6 +14,7 @@ class World {
   maxBottles = 5;
   coinAmount = 0;
   maxCoins = 5;
+  gameFinished = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -91,7 +92,7 @@ class World {
   checkThrowableObjectCollisions() {
     let endboss = this.getEndboss();
 
-    if (!endboss || endboss.isDead()) {
+    if (!endboss || endboss.isDead() || this.gameFinished) {
       return;
     }
 
@@ -100,8 +101,18 @@ class World {
         endboss.hit(20);
         this.endbossStatusBar.setPercentage(endboss.energy);
         this.throwabbleObjects.splice(index, 1);
+        this.checkEndbossDefeated(endboss);
       }
     });
+  }
+
+  checkEndbossDefeated(endboss) {
+    if (endboss.isDead()) {
+      this.gameFinished = true;
+      setTimeout(() => {
+        showWinScreen();
+      }, 1000);
+    }
   }
 
   getEndboss() {
@@ -109,6 +120,10 @@ class World {
   }
 
   checkCollisions() { 
+    if (this.gameFinished) {
+      return;
+    }
+
     this.level.enemies.forEach((enemy) => {
       if ((enemy instanceof Chicken && enemy.dead) || (enemy instanceof Endboss && enemy.isDead())) {
         return;
@@ -121,9 +136,19 @@ class World {
           this.character.playDamageSound();
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy); // Aktualisiert den Statusbalken entsprechend der aktuellen Energie des Charakters
+          this.checkCharacterDefeated();
         }
       }
     });
+  }
+
+  checkCharacterDefeated() {
+    if (this.character.isDead()) {
+      this.gameFinished = true;
+      setTimeout(() => {
+        showLoseScreen();
+      }, 1000);
+    }
   }
 
   isJumpingOnEnemy(enemy) {

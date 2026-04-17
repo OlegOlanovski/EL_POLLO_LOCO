@@ -2,6 +2,7 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let startScreen;
+let startButton;
 let backgroundMusic = new Audio("audio/game-sound.mp3");
 
 backgroundMusic.loop = true;
@@ -10,6 +11,7 @@ backgroundMusic.volume = 0.3;
 function init() {
   canvas = document.getElementById("canvas");
   startScreen = document.getElementById("startScreen");
+  startButton = document.getElementById("startButton");
 }
 
 function startGame() {
@@ -33,6 +35,50 @@ function playBackgroundMusic() {
   backgroundMusic.play().catch((error) => {
     console.log("Background music could not be played:", error);
   });
+}
+
+function showWinScreen() {
+  stopBackgroundMusic();
+  canvas?.classList.add("d-none");
+  startScreen?.classList.remove("d-none");
+  startScreen?.classList.add("final-screen");
+  startScreen?.classList.add("win-screen");
+  startButton?.classList.add("d-none");
+
+  setTimeout(() => {
+    resetToStartScreen();
+  }, 3000);
+}
+
+function showLoseScreen() {
+  stopBackgroundMusic();
+  canvas?.classList.add("d-none");
+  startScreen?.classList.remove("d-none");
+  startScreen?.classList.add("final-screen");
+  startScreen?.classList.add("lose-screen");
+  startButton?.classList.add("d-none");
+
+  setTimeout(() => {
+    showGameOverScreen();
+  }, 2500);
+}
+
+function showGameOverScreen() {
+  startScreen?.classList.remove("lose-screen");
+  startScreen?.classList.add("game-over-screen");
+
+  setTimeout(() => {
+    resetToStartScreen();
+  }, 2500);
+}
+
+function resetToStartScreen() {
+  window.location.reload();
+}
+
+function stopBackgroundMusic() {
+  backgroundMusic.pause();
+  backgroundMusic.currentTime = 0;
 }
 
 window.addEventListener("keydown", (e) => {

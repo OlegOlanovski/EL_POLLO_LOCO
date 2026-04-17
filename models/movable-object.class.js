@@ -6,6 +6,7 @@ class MovableObject extends DrawableObjekt {
   energy = 100;
   lastHit = 0;
   lastY = 0;
+  hurtDuration = 1;
 
   applyGravity() {
     setInterval(() => {
@@ -53,7 +54,7 @@ class MovableObject extends DrawableObjekt {
   isHurt() {
     let timePassed = new Date().getTime() - this.lastHit; // Zeit seit dem letzten Treffer
     timePassed = timePassed / 1000; // Umwandeln in Sekunden
-    return timePassed < 1; // Wenn weniger als 1 Sekunde vergangen ist, gilt das Objekt als verletzt  
+    return timePassed < this.hurtDuration; // Wenn weniger als hurtDuration vergangen ist, gilt das Objekt als verletzt
   }
 
   isDead() {
