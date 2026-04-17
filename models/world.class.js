@@ -15,6 +15,9 @@ class World {
   coinAmount = 0;
   maxCoins = 5;
   gameFinished = false;
+  enemyCollisionDamage = 20;
+  enemyDamageCooldown = 500;
+  lastEnemyDamage = 0;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -132,14 +135,23 @@ class World {
       if (this.character.isColliding(enemy)) {
         if (enemy instanceof Chicken && this.isJumpingOnEnemy(enemy)) {
           this.killChicken(enemy);
-        } else if (!this.character.isHurt()) {
-          this.character.playDamageSound();
-          this.character.hit();
-          this.statusBar.setPercentage(this.character.energy); // Aktualisiert den Statusbalken entsprechend der aktuellen Energie des Charakters
-          this.checkCharacterDefeated();
+        } else if (this.canTakeEnemyDamage()) {
+          this.damageCharacter();
         }
       }
     });
+  }
+
+  canTakeEnemyDamage() {
+    return new Date().getTime() - this.lastEnemyDamage > this.enemyDamageCooldown;
+  }
+
+  damageCharacter() {
+    this.lastEnemyDamage = new Date().getTime();
+    this.character.playDamageSound();
+    this.character.hit(this.enemyCollisionDamage);
+    this.statusBar.setPercentage(this.character.energy); // Aktualisiert den Statusbalken entsprechend der aktuellen Energie des Charakters
+    this.checkCharacterDefeated();
   }
 
   checkCharacterDefeated() {

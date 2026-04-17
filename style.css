@@ -35,11 +35,27 @@ canvas {
   position: absolute;
   inset: 0;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   background-image: url("img/9_intro_outro_screens/start/startscreen_1.png");
   background-size: cover;
   background-position: center;
+}
+
+.start-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 22px;
+  color: white;
+  font-size: 28px;
+  text-shadow: 2px 2px 4px black;
+}
+
+.start-controls b {
+  color: #ffcf43;
 }
 
 .win-screen {
@@ -49,6 +65,13 @@ canvas {
 .final-screen {
   z-index: 10;
   background-color: black;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.final-screen .start-controls {
+  display: none;
 }
 
 .lose-screen {

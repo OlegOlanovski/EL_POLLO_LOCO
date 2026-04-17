@@ -47,7 +47,7 @@ function showWinScreen() {
 
   setTimeout(() => {
     resetToStartScreen();
-  }, 3000);
+  }, 4000);
 }
 
 function showLoseScreen() {
