@@ -9,6 +9,8 @@ class Endboss extends MovableObject {
   isMovingForward = true;
   attackDistance = 130;
   world;
+  panic_sound = new Audio("audio/panic.mp3");
+  hasPlayedPanicSound = false;
   offset = {
     top: 60,
     bottom: 20,
@@ -63,6 +65,7 @@ class Endboss extends MovableObject {
 
   animate() {
     setInterval(() => {
+      this.checkPanicSound();
       this.patrol();
     }, 1000 / 60);
 
@@ -78,6 +81,30 @@ class Endboss extends MovableObject {
         this.playAnimation(this.IMAGES_WALKING);
       }
     }, 200);
+  }
+
+  checkPanicSound() {
+    if (!this.hasPlayedPanicSound && !this.isDead() && this.isVisibleOnScreen()) {
+      this.playPanicSound();
+    }
+  }
+
+  isVisibleOnScreen() {
+    if (!this.world) {
+      return false;
+    }
+
+    let screenLeft = this.x + this.world.camera_x;
+    let screenRight = screenLeft + this.width;
+    return screenRight > 0 && screenLeft < this.world.canvas.width;
+  }
+
+  playPanicSound() {
+    this.hasPlayedPanicSound = true;
+    this.panic_sound.currentTime = 0;
+    this.panic_sound.play().catch((error) => {
+      console.log("Panic sound could not be played:", error);
+    });
   }
 
   patrol() {
