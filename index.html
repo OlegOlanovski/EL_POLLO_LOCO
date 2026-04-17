@@ -30,13 +30,15 @@
         <canvas id="canvas" width="720" height="480"></canvas>
         <div id="startScreen" class="start-screen">
             <button id="startButton" onclick="startGame()" class="start-button">Start Game</button>
-            <div class="start-controls">
-                <span><b>Arrow Keys</b> Move</span>
-                <span><b>Space</b> Jump</span>
-                <span><b>D</b> Throw</span>
-            </div>
         </div>
+        <button id="fullscreenExitButton" onclick="exitFullscreen()" class="fullscreen-exit-button d-none">Exit</button>
     </div>
+    <div id="startControls" class="start-controls">
+        <span><b>Arrow Keys</b> Move</span>
+        <span><b>Space</b> Jump</span>
+        <span><b>D</b> Throw</span>
+    </div>
+    <button id="fullscreenButton" onclick="openFullscreen()" class="fullscreen-button">Fullscreen</button>
 </body>
 
 </html>

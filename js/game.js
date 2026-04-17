@@ -3,6 +3,10 @@ let world;
 let keyboard = new Keyboard();
 let startScreen;
 let startButton;
+let gameContainer;
+let fullscreenButton;
+let fullscreenExitButton;
+let startControls;
 let backgroundMusic = new Audio("audio/game-sound.mp3");
 
 backgroundMusic.loop = true;
@@ -12,6 +16,10 @@ function init() {
   canvas = document.getElementById("canvas");
   startScreen = document.getElementById("startScreen");
   startButton = document.getElementById("startButton");
+  gameContainer = document.querySelector(".game-container");
+  fullscreenButton = document.getElementById("fullscreenButton");
+  fullscreenExitButton = document.getElementById("fullscreenExitButton");
+  startControls = document.getElementById("startControls");
 }
 
 function startGame() {
@@ -80,6 +88,32 @@ function stopBackgroundMusic() {
   backgroundMusic.pause();
   backgroundMusic.currentTime = 0;
 }
+
+function openFullscreen() {
+  if (gameContainer.requestFullscreen) {
+    gameContainer.requestFullscreen();
+  } else if (gameContainer.webkitRequestFullscreen) {
+    gameContainer.webkitRequestFullscreen();
+  }
+}
+
+function exitFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  }
+}
+
+function updateFullscreenButton() {
+  let isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+
+  fullscreenButton?.classList.toggle("d-none", isFullscreen);
+  fullscreenExitButton?.classList.toggle("d-none", !isFullscreen);
+}
+
+document.addEventListener("fullscreenchange", updateFullscreenButton);
+document.addEventListener("webkitfullscreenchange", updateFullscreenButton);
 
 window.addEventListener("keydown", (e) => {
   if (e.keyCode == 39) {
