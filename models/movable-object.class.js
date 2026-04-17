@@ -41,8 +41,8 @@ class MovableObject extends DrawableObjekt {
     );
   }
 
-  hit() {
-    this.energy -= 5; 
+  hit(damage = 5) {
+    this.energy -= damage;
     if (this.energy < 0) {
       this.energy = 0; // Energie kann nicht negativ sein
     } else {

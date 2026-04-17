@@ -8,6 +8,7 @@ class World {
   statusBar = new Statusbar();
   coinStatusBar = new StatusbarCoin();
   bottleStatusBar = new StatusbarBottle();
+  endbossStatusBar = new StatusbarEndboss();
   throwabbleObjects = [];
   bottleAmount = 0;
   maxBottles = 5;
@@ -25,6 +26,9 @@ class World {
 
   setWorld() {
     this.character.world = this;
+    this.level.enemies.forEach((enemy) => {
+      enemy.world = this;
+    });
   }
 
   run() {
@@ -33,6 +37,7 @@ class World {
       this.checkBottleCollisions();
       this.checkCoinCollisions();
       this.checkThrowObjects();
+      this.checkThrowableObjectCollisions();
     }, 1000 / 60);  
   } 
 
@@ -83,9 +88,29 @@ class World {
     this.coinStatusBar.setPercentage(percentage);
   }
 
+  checkThrowableObjectCollisions() {
+    let endboss = this.getEndboss();
+
+    if (!endboss || endboss.isDead()) {
+      return;
+    }
+
+    this.throwabbleObjects.forEach((throwableObject, index) => {
+      if (throwableObject.isColliding(endboss)) {
+        endboss.hit(20);
+        this.endbossStatusBar.setPercentage(endboss.energy);
+        this.throwabbleObjects.splice(index, 1);
+      }
+    });
+  }
+
+  getEndboss() {
+    return this.level.enemies.find((enemy) => enemy instanceof Endboss);
+  }
+
   checkCollisions() { 
     this.level.enemies.forEach((enemy) => {
-      if (enemy instanceof Chicken && enemy.dead) {
+      if ((enemy instanceof Chicken && enemy.dead) || (enemy instanceof Endboss && enemy.isDead())) {
         return;
       }
 
@@ -136,6 +161,7 @@ class World {
     this.addToMap(this.statusBar);
     this.addToMap(this.coinStatusBar);
     this.addToMap(this.bottleStatusBar);
+    this.addToMap(this.endbossStatusBar);
 
     // Draw() wird immer wieder aufgerufen.
     let self = this;
