@@ -48,7 +48,7 @@ class World {
   } 
 
   checkThrowObjects() {
-   if (this.keyboard.D && this.bottleAmount > 0) { // Wenn die Taste "D" gedrückt wird, wird ein neues Wurfobjekt erstellt
+   if (this.keyboard.D && this.canThrowBottle()) { // Wenn die Taste "D" gedrückt wird, wird ein neues Wurfobjekt erstellt
       let bottleX = this.character.otherDirection ? this.character.x - 30 : this.character.x + 100;
       let throwableObject = new ThrowableObject(bottleX, this.character.y + 50, this.character.otherDirection); // Position des Wurfobjekts relativ zum Charakter
       this.throwabbleObjects.push(throwableObject); // Das neue Wurfobjekt wird zum Array hinzugefügt
@@ -60,6 +60,10 @@ class World {
     if (this.keyboard.D) {
       this.keyboard.D = false; // Verhindert, dass bei jedem Frame ein neues Objekt erstellt wird, solange die Taste gedrückt gehalten wird
     }
+  }
+
+  canThrowBottle() {
+    return this.bottleAmount > 0 && this.throwabbleObjects.length === 0;
   }
 
   checkBottleCollisions() {
