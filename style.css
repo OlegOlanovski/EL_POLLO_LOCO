@@ -3,20 +3,62 @@
   src: url("fonts/Zabars.ttf") format("truetype");
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
   margin: 0;
+  padding: 16px;
   background-image: url("img/desert.jpg");
   background-size: cover;
+  background-position: center;
   font-family: "Zabars", Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
 }
+
 h1 {
+  margin: 16px 0 24px;
   font-size: 90px;
   letter-spacing: 9px;
+  line-height: 1;
+  text-align: center;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  
+}
+
+.orientation-warning {
+  display: none;
+}
+
+.orientation-warning-content {
+  max-width: 360px;
+  padding: 24px;
+  border: 2px solid #ffcf43;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.62);
+  color: white;
+  text-align: center;
+  text-shadow: 2px 2px 4px black;
+}
+
+.orientation-warning-content p {
+  margin: 0 0 10px;
+  font-size: 40px;
+  line-height: 1;
+}
+
+.orientation-warning-content span {
+  display: block;
+  font-size: 28px;
+  line-height: 1;
 }
 
 canvas {
@@ -29,19 +71,23 @@ canvas {
 
 .game-container {
   position: relative;
-  width: 720px;
-  height: 480px;
+  width: min(720px, calc(100vw - 32px), 150vh);
+  aspect-ratio: 3 / 2;
   background-color: black;
 }
 
 .game-container:fullscreen {
-  width: 100vw;
-  height: 100vh;
+  width: min(100vw, 150vh);
+  height: auto;
+  aspect-ratio: 3 / 2;
+  margin: auto;
 }
 
 .game-container:-webkit-full-screen {
-  width: 100vw;
-  height: 100vh;
+  width: min(100vw, 150vh);
+  height: auto;
+  aspect-ratio: 3 / 2;
+  margin: auto;
 }
 
 .start-screen {
@@ -126,7 +172,7 @@ canvas {
 
 .fullscreen-exit-button {
   position: absolute;
-  bottom: 12px;
+  top: 12px;
   right: 12px;
   z-index: 20;
   padding: 8px 14px;
@@ -144,6 +190,274 @@ canvas {
   background-color: #ffb72b;
 }
 
+.mobile-controls {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  left: 10px;
+  z-index: 15;
+  display: none;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.mobile-control-group {
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.mobile-control-button {
+  min-width: 58px;
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 2px solid #7a2f00;
+  border-radius: 8px;
+  background-color: rgba(255, 207, 67, 0.86);
+  color: #4a1d00;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  display: grid;
+  place-items: center;
+  touch-action: none;
+}
+
+.mobile-control-button:active {
+  background-color: #ffb72b;
+}
+
+.mobile-control-icon {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+.mobile-control-icon path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 4;
+}
+
+.mobile-control-icon-bottle {
+  object-fit: contain;
+}
+
+.start-screen:not(.d-none) ~ .mobile-controls {
+  display: none;
+}
+
 .d-none {
   display: none;
+}
+
+@media (hover: none), (max-width: 760px) {
+  .mobile-controls {
+    display: flex;
+  }
+}
+
+@media (orientation: portrait) and (hover: none), (orientation: portrait) and (pointer: coarse) {
+  html,
+  body {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  body {
+    justify-content: center;
+    padding: 24px;
+  }
+
+  h1,
+  .game-container,
+  .start-controls,
+  .fullscreen-button {
+    display: none;
+  }
+
+  .orientation-warning {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background-image: url("img/desert.jpg");
+    background-position: center;
+    background-size: cover;
+  }
+}
+
+@media (max-width: 760px) {
+  body {
+    padding: 12px;
+  }
+
+  h1 {
+    margin: 8px 0 16px;
+    font-size: 56px;
+    letter-spacing: 4px;
+  }
+
+  .game-container {
+    width: min(calc(100vw - 24px), 130vh);
+  }
+
+  .start-controls {
+    gap: 10px 14px;
+    margin-top: 24px;
+    font-size: 30px;
+    letter-spacing: 1px;
+  }
+
+  .start-button {
+    margin-top: 14px;
+    padding: 10px 20px;
+    font-size: 20px;
+  }
+
+  .fullscreen-button,
+  .fullscreen-exit-button {
+    font-size: 16px;
+  }
+
+  .mobile-control-button {
+    min-width: 54px;
+    min-height: 40px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 520px) {
+  h1 {
+    font-size: 42px;
+    letter-spacing: 2px;
+  }
+
+  .game-container {
+    width: calc(100vw - 24px);
+  }
+
+  .start-controls {
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 18px;
+    font-size: 26px;
+  }
+
+  .mobile-controls {
+    right: 6px;
+    bottom: 6px;
+    left: 6px;
+  }
+
+  .mobile-control-group {
+    gap: 6px;
+  }
+
+  .mobile-control-button {
+    min-width: 48px;
+    min-height: 38px;
+    padding: 6px 8px;
+    font-size: 15px;
+  }
+
+  .mobile-control-icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-height: 560px) {
+  body {
+    padding: 8px;
+  }
+
+  h1 {
+    margin: 0 0 8px;
+    font-size: 42px;
+    letter-spacing: 2px;
+  }
+
+  .game-container {
+    width: min(calc(100vw - 16px), 120vh);
+  }
+
+  .start-controls {
+    margin-top: 8px;
+    font-size: 24px;
+  }
+
+  .fullscreen-button {
+    margin-top: 8px;
+  }
+
+  .mobile-control-button {
+    min-width: 48px;
+    min-height: 36px;
+    padding: 6px 8px;
+    font-size: 15px;
+  }
+
+  .mobile-control-icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  html,
+  body {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  body {
+    justify-content: center;
+    padding: 4px;
+  }
+
+  h1,
+  .start-controls,
+  .fullscreen-button {
+    display: none;
+  }
+
+  .game-container {
+    width: min(calc(100vw - 8px), 145vh);
+  }
+
+  .mobile-controls {
+    right: 6px;
+    bottom: 6px;
+    left: 6px;
+  }
+
+  .mobile-control-button {
+    min-width: 46px;
+    min-height: 34px;
+    padding: 5px 7px;
+    font-size: 14px;
+  }
+
+  .mobile-control-icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+@supports (height: 100dvh) {
+  @media (orientation: landscape) and (max-height: 560px) {
+    .game-container {
+      width: min(calc(100vw - 8px), 145dvh);
+    }
+  }
 }

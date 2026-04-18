@@ -28,12 +28,42 @@
 
 <body onload="init()">
     <h1>El Pollo Loco</h1>
+    <div class="orientation-warning" role="status" aria-live="polite">
+        <div class="orientation-warning-content">
+            <p>Please rotate your phone horizontally.</p>
+            <span>The game starts in landscape mode.</span>
+        </div>
+    </div>
     <div class="game-container">
         <canvas id="canvas" width="720" height="480"></canvas>
         <div id="startScreen" class="start-screen">
             <button id="startButton" onclick="startGame()" class="start-button">Start Game</button>
         </div>
         <button id="fullscreenExitButton" onclick="exitFullscreen()" class="fullscreen-exit-button d-none">Exit</button>
+        <div id="mobileControls" class="mobile-controls" aria-label="Game controls">
+            <div class="mobile-control-group">
+                <button type="button" class="mobile-control-button" data-key="LEFT" aria-label="Move left">
+                    <svg class="mobile-control-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M15 5L8 12L15 19"></path>
+                    </svg>
+                </button>
+                <button type="button" class="mobile-control-button" data-key="RIGHT" aria-label="Move right">
+                    <svg class="mobile-control-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M9 5L16 12L9 19"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="mobile-control-group">
+                <button type="button" class="mobile-control-button" data-key="SPACE" aria-label="Jump">
+                    <svg class="mobile-control-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M5 15L12 8L19 15"></path>
+                    </svg>
+                </button>
+                <button type="button" class="mobile-control-button" data-key="D" aria-label="Throw bottle">
+                    <img class="mobile-control-icon mobile-control-icon-bottle" src="img/7_statusbars/3_icons/icon_salsa_bottle.png" alt="" aria-hidden="true">
+                </button>
+            </div>
+        </div>
     </div>
     <div id="startControls" class="start-controls">
         <span><b>Arrow Keys</b> Move </span>

@@ -68,6 +68,10 @@ class Endboss extends MovableObject {
 
   animate() {
     setInterval(() => {
+      if (this.isGamePaused()) {
+        return;
+      }
+
       this.activateEndboss();
       if (!this.isActive) {
         return;
@@ -80,6 +84,10 @@ class Endboss extends MovableObject {
     }, 1000 / 60);
 
     setInterval(() => {
+      if (this.isGamePaused()) {
+        return;
+      }
+
       if (!this.isActive || !this.hasStartedPatrol) {
         return;
       }

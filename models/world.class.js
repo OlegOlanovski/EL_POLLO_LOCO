@@ -38,6 +38,10 @@ class World {
 
   run() {
     setInterval(() => { 
+      if (this.isGamePaused()) {
+        return;
+      }
+
       this.checkCollisions();
       this.checkBottleCollisions();
       this.checkCoinCollisions();
@@ -46,6 +50,10 @@ class World {
       this.removeFinishedThrowableObjects();
     }, 1000 / 60);  
   } 
+
+  isGamePaused() {
+    return typeof isGamePausedByOrientation === "function" && isGamePausedByOrientation();
+  }
 
   checkThrowObjects() {
    if (this.keyboard.D && this.canThrowBottle()) { // Wenn die Taste "D" gedrückt wird, wird ein neues Wurfobjekt erstellt

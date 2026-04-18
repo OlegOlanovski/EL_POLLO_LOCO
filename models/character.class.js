@@ -70,6 +70,10 @@ IMAGES_HURT = [
 
   animate() {
     setInterval(() => {
+      if (this.isGamePaused()) {
+        return;
+      }
+
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
         this.otherDirection = false;
@@ -85,6 +89,10 @@ IMAGES_HURT = [
     }, 1000 / 60); // 60 frames per second
 
     setInterval(() => {
+      if (this.isGamePaused()) {
+        return;
+      }
+
       if(this.isDead()) {   // Death animation
         this.playAnimation(this.IMAGES_DEAD);
         

@@ -11,12 +11,20 @@ class MovableObject extends DrawableObjekt {
 
   applyGravity() {
     this.gravityIntervalId = setInterval(() => {
+      if (this.isGamePaused()) {
+        return;
+      }
+
       if (this.isAboveGround() || this.speedY > 0) {
         this.lastY = this.y;
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
       }
     }, 1000 / 25);
+  }
+
+  isGamePaused() {
+    return typeof isGamePausedByOrientation === "function" && isGamePausedByOrientation();
   }
 
   stopGravity() {

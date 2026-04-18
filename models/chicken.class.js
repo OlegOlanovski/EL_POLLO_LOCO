@@ -24,12 +24,20 @@ class Chicken extends MovableObject {
 
   animate() {
     setInterval(() => {
+      if (this.isGamePaused()) {
+        return;
+      }
+
       if (!this.dead) {
         this.moveLeft();
       }
     }, 1000 / 60); // 60 frames per second
 
     setInterval(() => {
+      if (this.isGamePaused()) {
+        return;
+      }
+
       if (!this.dead) {
         this.playAnimation(this.IMAGES_WALKING);
       }

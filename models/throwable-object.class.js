@@ -37,6 +37,10 @@ class ThrowableObject extends MovableObject {
         this.speedY = this.throwSpeedY;
         this.applyGravity();
         this.throwIntervalId = setInterval(() => {
+            if (this.isGamePaused()) {
+                return;
+            }
+
             this.x += this.throwSpeedX * this.throwDirection; // Bewegt das Objekt in Blickrichtung
             if (this.hasHitGround()) {
                 this.splashOnGround();
@@ -70,6 +74,10 @@ class ThrowableObject extends MovableObject {
         this.playAnimation(this.IMAGES_SPLASH);
 
         this.splashAnimationIntervalId = setInterval(() => {
+            if (this.isGamePaused()) {
+                return;
+            }
+
             if (this.currentImage >= this.IMAGES_SPLASH.length) {
                 clearInterval(this.splashAnimationIntervalId);
                 this.isFinished = true;

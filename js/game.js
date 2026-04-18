@@ -7,6 +7,7 @@ let gameContainer;
 let fullscreenButton;
 let fullscreenExitButton;
 let startControls;
+let mobileControls;
 let backgroundMusic = new Audio("audio/game-sound.mp3");
 
 backgroundMusic.loop = true;
@@ -20,9 +21,14 @@ function init() {
   fullscreenButton = document.getElementById("fullscreenButton");
   fullscreenExitButton = document.getElementById("fullscreenExitButton");
   startControls = document.getElementById("startControls");
+  mobileControls = document.getElementById("mobileControls");
+  bindMobileControls();
 }
 
 function startGame() {
+  if (isGamePausedByOrientation()) {
+    return;
+  }
   if (world) {
     return;
   }
@@ -114,6 +120,57 @@ function updateFullscreenButton() {
 
 document.addEventListener("fullscreenchange", updateFullscreenButton);
 document.addEventListener("webkitfullscreenchange", updateFullscreenButton);
+
+function isMobilePortrait() {
+  return (
+    window.matchMedia("(orientation: portrait) and (hover: none)").matches ||
+    window.matchMedia("(orientation: portrait) and (pointer: coarse)").matches
+  );
+}
+
+function isGamePausedByOrientation() {
+  return isMobilePortrait();
+}
+
+function releaseKeyboard() {
+  keyboard.LEFT = false;
+  keyboard.RIGHT = false;
+  keyboard.UP = false;
+  keyboard.DOWN = false;
+  keyboard.SPACE = false;
+  keyboard.D = false;
+}
+
+function handleOrientationChange() {
+  if (isMobilePortrait()) {
+    releaseKeyboard();
+  }
+}
+
+window.addEventListener("resize", handleOrientationChange);
+window.addEventListener("orientationchange", handleOrientationChange);
+
+function bindMobileControls() {
+  if (!mobileControls) {
+    return;
+  }
+
+  mobileControls.querySelectorAll("[data-key]").forEach((button) => {
+    let key = button.dataset.key;
+
+    button.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      keyboard[key] = true;
+    });
+
+    ["pointerup", "pointerleave", "pointercancel"].forEach((eventName) => {
+      button.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        keyboard[key] = false;
+      });
+    });
+  });
+}
 
 window.addEventListener("keydown", (e) => {
   if (e.keyCode == 39) {
