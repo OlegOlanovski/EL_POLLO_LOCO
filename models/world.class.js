@@ -11,11 +11,12 @@ class World {
   endbossStatusBar = new StatusbarEndboss();
   throwabbleObjects = [];
   bottleAmount = 0;
-  maxBottles = 5;
+  maxBottles = 7;
   coinAmount = 0;
   maxCoins = 5;
   gameFinished = false;
   enemyCollisionDamage = 20;
+  endbossBottleDamage = 34;
   enemyDamageCooldown = 500;
   lastEnemyDamage = 0;
 
@@ -42,6 +43,7 @@ class World {
       this.checkCoinCollisions();
       this.checkThrowObjects();
       this.checkThrowableObjectCollisions();
+      this.removeFinishedThrowableObjects();
     }, 1000 / 60);  
   } 
 
@@ -95,18 +97,49 @@ class World {
   checkThrowableObjectCollisions() {
     let endboss = this.getEndboss();
 
-    if (!endboss || endboss.isDead() || this.gameFinished) {
+    if (this.gameFinished) {
       return;
     }
 
-    this.throwabbleObjects.forEach((throwableObject, index) => {
-      if (throwableObject.isColliding(endboss)) {
-        endboss.hit(20);
+    this.throwabbleObjects.forEach((throwableObject) => {
+      if (throwableObject.isSplashing) {
+        return;
+      }
+
+      if (this.checkThrowableObjectHitsChicken(throwableObject)) {
+        return;
+      }
+
+      if (endboss && !endboss.isDead() && throwableObject.isColliding(endboss)) {
+        endboss.hit(this.endbossBottleDamage);
         this.endbossStatusBar.setPercentage(endboss.energy);
-        this.throwabbleObjects.splice(index, 1);
+        throwableObject.splash(() => this.removeThrowableObject(throwableObject));
         this.checkEndbossDefeated(endboss);
       }
     });
+  }
+
+  checkThrowableObjectHitsChicken(throwableObject) {
+    let chicken = this.level.enemies.find((enemy) => enemy instanceof Chicken && !enemy.dead && throwableObject.isColliding(enemy));
+
+    if (!chicken) {
+      return false;
+    }
+
+    this.killChickenWithBottle(chicken);
+    throwableObject.splash(() => this.removeThrowableObject(throwableObject));
+    return true;
+  }
+
+  removeThrowableObject(throwableObject) {
+    let index = this.throwabbleObjects.indexOf(throwableObject);
+    if (index > -1) {
+      this.throwabbleObjects.splice(index, 1);
+    }
+  }
+
+  removeFinishedThrowableObjects() {
+    this.throwabbleObjects = this.throwabbleObjects.filter((throwableObject) => !throwableObject.isFinished);
   }
 
   checkEndbossDefeated(endboss) {
@@ -175,6 +208,15 @@ class World {
     chicken.die();
     this.character.playAttackSound();
     this.character.speedY = 20;
+    this.removeChickenAfterDelay(chicken);
+  }
+
+  killChickenWithBottle(chicken) {
+    chicken.die();
+    this.removeChickenAfterDelay(chicken);
+  }
+
+  removeChickenAfterDelay(chicken) {
     setTimeout(() => {
       let index = this.level.enemies.indexOf(chicken);
       if (index > -1) {

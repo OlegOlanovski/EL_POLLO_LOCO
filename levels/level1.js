@@ -16,7 +16,16 @@ level1 = new Level(
     new SmallChicken(2000),
     new Endboss(),
   ],
-  [new Cloud(), new Cloud()],
+  [
+    new Cloud(-300),
+    new Cloud(100),
+    new Cloud(500),
+    new Cloud(900),
+    new Cloud(1300),
+    new Cloud(1700),
+    new Cloud(2100),
+    new Cloud(2500),
+  ],
   [
     new BackgroundObject("img/5_background/layers/air.png", -720),
     new BackgroundObject("img/5_background/layers/3_third_layer/2.png", -720),
@@ -63,6 +72,8 @@ level1 = new Level(
     new Bottle(980),
     new Bottle(1300),
     new Bottle(1700),
+    new Bottle(2050),
+    new Bottle(2300),
   ],
   [
     new Coin(520),
