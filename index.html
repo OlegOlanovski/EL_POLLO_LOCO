@@ -39,7 +39,23 @@
         <div id="startScreen" class="start-screen">
             <button id="startButton" onclick="startGame()" class="start-button">Start Game</button>
         </div>
-        <button id="fullscreenExitButton" onclick="exitFullscreen()" class="fullscreen-exit-button d-none">Exit</button>
+        <button type="button" onclick="openFullscreen()" class="mobile-fullscreen-button" aria-label="Open fullscreen">
+            <svg class="mobile-fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4 9V4H9"></path>
+                <path d="M15 4H20V9"></path>
+                <path d="M20 15V20H15"></path>
+                <path d="M9 20H4V15"></path>
+            </svg>
+        </button>
+        <button id="fullscreenExitButton" onclick="exitFullscreen()" class="fullscreen-exit-button d-none" aria-label="Exit fullscreen">
+            <span class="fullscreen-exit-text">Exit</span>
+            <svg class="fullscreen-exit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M9 4V9H4"></path>
+                <path d="M15 4V9H20"></path>
+                <path d="M20 15H15V20"></path>
+                <path d="M4 15H9V20"></path>
+            </svg>
+        </button>
         <div id="mobileControls" class="mobile-controls" aria-label="Game controls">
             <div class="mobile-control-group">
                 <button type="button" class="mobile-control-button" data-key="LEFT" aria-label="Move left">

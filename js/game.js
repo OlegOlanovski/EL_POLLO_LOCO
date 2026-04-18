@@ -122,10 +122,16 @@ document.addEventListener("fullscreenchange", updateFullscreenButton);
 document.addEventListener("webkitfullscreenchange", updateFullscreenButton);
 
 function isMobilePortrait() {
-  return (
-    window.matchMedia("(orientation: portrait) and (hover: none)").matches ||
-    window.matchMedia("(orientation: portrait) and (pointer: coarse)").matches
-  );
+  return isPhoneSizedTouchDevice() && window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches;
+}
+
+function isPhoneSizedTouchDevice() {
+  let hasTouchInput = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  let hasPhoneViewport =
+    window.matchMedia("(max-width: 760px)").matches ||
+    window.matchMedia("(orientation: landscape) and (max-height: 760px)").matches;
+
+  return hasTouchInput && hasPhoneViewport;
 }
 
 function isGamePausedByOrientation() {

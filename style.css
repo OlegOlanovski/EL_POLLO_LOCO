@@ -172,8 +172,8 @@ canvas {
 
 .fullscreen-exit-button {
   position: absolute;
-  top: 12px;
   right: 12px;
+  bottom: 12px;
   z-index: 20;
   padding: 8px 14px;
   border: 2px solid #7a2f00;
@@ -188,6 +188,60 @@ canvas {
 .fullscreen-button:hover,
 .fullscreen-exit-button:hover {
   background-color: #ffb72b;
+}
+
+.fullscreen-exit-icon {
+  width: 20px;
+  height: 20px;
+  display: none;
+}
+
+.fullscreen-exit-icon path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+}
+
+.mobile-fullscreen-button {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 20;
+  display: none;
+  width: 34px;
+  height: 34px;
+  padding: 5px;
+  border: 2px solid #7a2f00;
+  border-radius: 8px;
+  background-color: rgba(255, 207, 67, 0.86);
+  color: #4a1d00;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.mobile-fullscreen-button:active {
+  background-color: #ffb72b;
+}
+
+.mobile-fullscreen-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.mobile-fullscreen-icon path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+}
+
+.game-container:fullscreen .mobile-fullscreen-button,
+.game-container:-webkit-full-screen .mobile-fullscreen-button {
+  display: none;
 }
 
 .mobile-controls {
@@ -253,13 +307,40 @@ canvas {
   display: none;
 }
 
-@media (hover: none), (max-width: 760px) {
+@media (hover: none) and (pointer: coarse) and (max-width: 760px),
+  (orientation: landscape) and (hover: none) and (pointer: coarse) and (max-height: 760px) {
+  .fullscreen-exit-button:not(.d-none) {
+    top: 8px;
+    right: 8px;
+    bottom: auto;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 5px;
+    background-color: rgba(255, 207, 67, 0.86);
+    touch-action: manipulation;
+  }
+
+  .fullscreen-exit-text {
+    display: none;
+  }
+
+  .fullscreen-exit-icon {
+    display: block;
+  }
+
+  .mobile-fullscreen-button {
+    display: grid;
+    place-items: center;
+  }
+
   .mobile-controls {
     display: flex;
   }
 }
 
-@media (orientation: portrait) and (hover: none), (orientation: portrait) and (pointer: coarse) {
+@media (orientation: portrait) and (hover: none) and (pointer: coarse) and (max-width: 760px) {
   html,
   body {
     height: 100vh;
@@ -322,15 +403,26 @@ canvas {
     font-size: 20px;
   }
 
-  .fullscreen-button,
-  .fullscreen-exit-button {
+  .fullscreen-button {
     font-size: 16px;
+  }
+
+  .mobile-fullscreen-button {
+    width: 32px;
+    height: 32px;
   }
 
   .mobile-control-button {
     min-width: 54px;
     min-height: 40px;
     font-size: 16px;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) and (max-width: 760px) {
+  .fullscreen-exit-button:not(.d-none) {
+    width: 32px;
+    height: 32px;
   }
 }
 
@@ -361,6 +453,22 @@ canvas {
     gap: 6px;
   }
 
+  .mobile-fullscreen-button {
+    top: 6px;
+    left: 6px;
+  }
+
+  .mobile-fullscreen-button {
+    width: 30px;
+    height: 30px;
+    padding: 4px;
+  }
+
+  .mobile-fullscreen-icon {
+    width: 18px;
+    height: 18px;
+  }
+
   .mobile-control-button {
     min-width: 48px;
     min-height: 38px;
@@ -371,6 +479,21 @@ canvas {
   .mobile-control-icon {
     width: 24px;
     height: 24px;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) and (max-width: 520px) {
+  .fullscreen-exit-button:not(.d-none) {
+    top: 6px;
+    right: 6px;
+    width: 30px;
+    height: 30px;
+    padding: 4px;
+  }
+
+  .fullscreen-exit-icon {
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -398,6 +521,22 @@ canvas {
     margin-top: 8px;
   }
 
+  .mobile-fullscreen-button {
+    top: 6px;
+    left: 6px;
+  }
+
+  .mobile-fullscreen-button {
+    width: 30px;
+    height: 30px;
+    padding: 4px;
+  }
+
+  .mobile-fullscreen-icon {
+    width: 18px;
+    height: 18px;
+  }
+
   .mobile-control-button {
     min-width: 48px;
     min-height: 36px;
@@ -408,6 +547,21 @@ canvas {
   .mobile-control-icon {
     width: 24px;
     height: 24px;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) and (max-height: 560px) {
+  .fullscreen-exit-button:not(.d-none) {
+    top: 6px;
+    right: 6px;
+    width: 30px;
+    height: 30px;
+    padding: 4px;
+  }
+
+  .fullscreen-exit-icon {
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -441,6 +595,22 @@ canvas {
     left: 6px;
   }
 
+  .mobile-fullscreen-button {
+    top: 6px;
+    left: 6px;
+  }
+
+  .mobile-fullscreen-button {
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+  }
+
+  .mobile-fullscreen-icon {
+    width: 16px;
+    height: 16px;
+  }
+
   .mobile-control-button {
     min-width: 46px;
     min-height: 34px;
@@ -451,6 +621,21 @@ canvas {
   .mobile-control-icon {
     width: 22px;
     height: 22px;
+  }
+}
+
+@media (orientation: landscape) and (hover: none) and (pointer: coarse) and (max-height: 560px) {
+  .fullscreen-exit-button:not(.d-none) {
+    top: 6px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+  }
+
+  .fullscreen-exit-icon {
+    width: 16px;
+    height: 16px;
   }
 }
 
