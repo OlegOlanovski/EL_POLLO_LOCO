@@ -19,6 +19,7 @@ class World {
   endbossBottleDamage = 34;
   enemyDamageCooldown = 500;
   lastEnemyDamage = 0;
+
   /**
    * Creates a new instance and initializes its default state.
    * @param {HTMLCanvasElement} canvas - Game canvas element.
@@ -32,6 +33,7 @@ class World {
     this.draw();
     this.run();
   }
+
   /** Assigns the world reference to objects that need it. */
   setWorld() {
     this.character.world = this;
@@ -39,9 +41,10 @@ class World {
       enemy.world = this;
     });
   }
+
   /** Starts the recurring world update loop. */
   run() {
-    setInterval(() => { 
+    setInterval(() => {
       if (this.isGamePaused()) {
         return;
       }
@@ -51,8 +54,9 @@ class World {
       this.checkThrowObjects();
       this.checkThrowableObjectCollisions();
       this.removeFinishedThrowableObjects();
-    }, 1000 / 60);  
-  } 
+    }, 1000 / 60);
+  }
+
   /**
    * Is game paused.
    * @returns {boolean} Result of the check.
@@ -60,6 +64,7 @@ class World {
   isGamePaused() {
     return typeof isGamePausedByOrientation === "function" && isGamePausedByOrientation();
   }
+
   /** Checks whether the character throws a bottle. */
   checkThrowObjects() {
    if (this.keyboard.D && this.canThrowBottle()) { // Creates a new throwable object when the D key is pressed.
@@ -74,6 +79,7 @@ class World {
       this.keyboard.D = false; // Prevents creating a new object every frame while the key is held.
     }
   }
+
   /**
    * Can throw bottle.
    * @returns {boolean} Result of the check.
@@ -81,6 +87,7 @@ class World {
   canThrowBottle() {
     return this.bottleAmount > 0 && this.throwabbleObjects.length === 0;
   }
+
   /** Checks bottle pickup collisions. */
   checkBottleCollisions() {
     this.level.bottles.forEach((bottle, index) => {
@@ -92,11 +99,13 @@ class World {
       }
     });
   }
+
   /** Updates the bottle status bar. */
   updateBottleStatusBar() {
     let percentage = (this.bottleAmount / this.maxBottles) * 100;
     this.bottleStatusBar.setPercentage(percentage);
   }
+
   /** Checks coin pickup collisions. */
   checkCoinCollisions() {
     this.level.coins.forEach((coin, index) => {
@@ -108,11 +117,13 @@ class World {
       }
     });
   }
+
   /** Updates the coin status bar. */
   updateCoinStatusBar() {
     let percentage = (this.coinAmount / this.maxCoins) * 100;
     this.coinStatusBar.setPercentage(percentage);
   }
+
   /** Checks all thrown bottle collisions. */
   checkThrowableObjectCollisions() {
     let endboss = this.getEndboss();
@@ -123,6 +134,7 @@ class World {
       this.checkThrowableObjectCollision(throwableObject, endboss);
     });
   }
+
   /**
    * Checks one thrown bottle collision.
    * @param {ThrowableObject} throwableObject - Thrown bottle to check.
@@ -137,6 +149,7 @@ class World {
     }
     this.checkThrowableObjectHitsEndboss(throwableObject, endboss);
   }
+
   /**
    * Checks whether a thrown bottle hits the endboss.
    * @param {ThrowableObject} throwableObject - Thrown bottle to check.
@@ -151,6 +164,7 @@ class World {
     throwableObject.splash(() => this.removeThrowableObject(throwableObject));
     this.checkEndbossDefeated(endboss);
   }
+
   /**
    * Checks whether a thrown bottle hits a chicken.
    * @param {ThrowableObject} throwableObject - Thrown bottle to check.
@@ -165,6 +179,7 @@ class World {
     throwableObject.splash(() => this.removeThrowableObject(throwableObject));
     return true;
   }
+
   /**
    * Removes a thrown bottle from the world.
    * @param {ThrowableObject} throwableObject - Thrown bottle to check.
@@ -175,10 +190,12 @@ class World {
       this.throwabbleObjects.splice(index, 1);
     }
   }
+
   /** Removes thrown bottles that finished their splash animation. */
   removeFinishedThrowableObjects() {
     this.throwabbleObjects = this.throwabbleObjects.filter((throwableObject) => !throwableObject.isFinished);
   }
+
   /**
    * Checks whether the endboss was defeated.
    * @param {Endboss} endboss - Endboss instance to check.
@@ -191,6 +208,7 @@ class World {
       }, 1000);
     }
   }
+
   /**
    * Returns the endboss from the current level.
    * @returns {Endboss|undefined} Resolved value.
@@ -198,8 +216,9 @@ class World {
   getEndboss() {
     return this.level.enemies.find((enemy) => enemy instanceof Endboss);
   }
+
   /** Checks all character enemy collisions. */
-  checkCollisions() { 
+  checkCollisions() {
     if (this.gameFinished) {
       return;
     }
@@ -207,6 +226,7 @@ class World {
       this.checkEnemyCollision(enemy);
     });
   }
+
   /**
    * Checks one character enemy collision.
    * @param {MovableObject} enemy - Enemy to check.
@@ -221,6 +241,7 @@ class World {
       this.damageCharacter();
     }
   }
+
   /**
    * Should ignore enemy.
    * @param {MovableObject} enemy - Enemy to check.
@@ -229,6 +250,7 @@ class World {
   shouldIgnoreEnemy(enemy) {
     return (enemy instanceof Chicken && enemy.dead) || (enemy instanceof Endboss && enemy.isDead());
   }
+
   /**
    * Can take enemy damage.
    * @returns {boolean} Result of the check.
@@ -236,6 +258,7 @@ class World {
   canTakeEnemyDamage() {
     return new Date().getTime() - this.lastEnemyDamage > this.enemyDamageCooldown;
   }
+
   /** Damages the character and updates the health bar. */
   damageCharacter() {
     this.lastEnemyDamage = new Date().getTime();
@@ -244,6 +267,7 @@ class World {
     this.statusBar.setPercentage(this.character.energy); // Updates the status bar with the character's current energy.
     this.checkCharacterDefeated();
   }
+
   /** Checks whether the character was defeated. */
   checkCharacterDefeated() {
     if (this.character.isDead()) {
@@ -253,6 +277,7 @@ class World {
       }, 1000);
     }
   }
+
   /**
    * Is jumping on enemy.
    * @param {MovableObject} enemy - Enemy to check.
@@ -264,6 +289,7 @@ class World {
     let enemyTop = enemy.y + enemy.offset.top;
     return this.character.speedY < 0 && previousCharacterBottom <= enemyTop && characterBottom >= enemyTop;
   }
+
   /**
    * Kills a chicken after the character jumps on it.
    * @param {Chicken} chicken - Chicken to update or remove.
@@ -274,6 +300,7 @@ class World {
     this.character.speedY = 20;
     this.removeChickenAfterDelay(chicken);
   }
+
   /**
    * Kills a chicken after a bottle hit.
    * @param {Chicken} chicken - Chicken to update or remove.
@@ -282,6 +309,7 @@ class World {
     chicken.die();
     this.removeChickenAfterDelay(chicken);
   }
+
   /**
    * Removes a dead chicken after a short delay.
    * @param {Chicken} chicken - Chicken to update or remove.
@@ -294,6 +322,7 @@ class World {
       }
     }, 500);
   }
+
   /** Draws the object on the canvas. */
   draw() {
     this.clearCanvas();
@@ -301,10 +330,12 @@ class World {
     this.drawFixedObjects();
     this.requestDrawFrame();
   }
+
   /** Clears the complete canvas. */
   clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
+
   /** Draws all camera-relative objects. */
   drawMovableObjects() {
     this.ctx.translate(this.camera_x, 0); // Moves all following objects by the camera offset.
@@ -317,6 +348,7 @@ class World {
     this.addObjectsToMap(this.throwabbleObjects);
     this.ctx.translate(-this.camera_x, 0); // Resets the camera offset so UI elements stay in place.
   }
+
   /** Draws fixed UI objects. */
   drawFixedObjects() {
     this.addToMap(this.statusBar);
@@ -324,12 +356,14 @@ class World {
     this.addToMap(this.bottleStatusBar);
     this.addToMap(this.endbossStatusBar);
   }
+
   /** Requests the next draw frame. */
   requestDrawFrame() {
     requestAnimationFrame(() => {
       this.draw();
     });
   }
+
   /**
    * Draws all objects in a collection.
    * @param {MovableObject[]} objects - Objects to draw.
@@ -339,6 +373,7 @@ class World {
       this.addToMap(o);
     });
   }
+
   /**
    * Draws one object on the map.
    * @param {MovableObject} movableObject - Object to draw or transform.
@@ -353,6 +388,7 @@ class World {
       this.flipImageBack(movableObject);
     }
   }
+
   /**
    * Flips an object before drawing it.
    * @param {MovableObject} movableObject - Object to draw or transform.
@@ -363,6 +399,7 @@ class World {
     this.ctx.scale(-1, 1);
     movableObject.x = movableObject.x * -1;
   }
+
   /**
    * Restores an object after flipped drawing.
    * @param {MovableObject} movableObject - Object to draw or transform.

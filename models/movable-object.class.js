@@ -48,17 +48,12 @@ class MovableObject extends DrawableObjekt {
    */
   isAboveGround() {
     if (this instanceof ThrowableObject) { // Throwable objects cannot fall below the ground.
-      return true; 
+      return true;
     } else {
       return this.y < 180; // Other objects are above ground when y is below 180.
     }
 
-   
   }
-
- 
-
-
 
   // Checks whether this object collides with another movable object.
   /**
@@ -86,7 +81,7 @@ class MovableObject extends DrawableObjekt {
     } else {
       this.lastHit = new Date().getTime(); // Timestamp of the last hit.
     }
-  }  
+  }
 
   /**
    * Is hurt.
@@ -104,18 +99,13 @@ class MovableObject extends DrawableObjekt {
    */
   isDead() {
     return this.energy === 0;
-  } 
-
-
-
-
+  }
 
   /**
    * Displays the next image of an animation sequence.
    * @param {string[]} images - Animation image paths.
    */
   playAnimation(images) {
-    
 
     let i = this.currentImage % images.length; // let i = 7 % 6; => 1, remainder 1
     // let i = this.currentImage % 6; => 0,1,2,3,4,5,0,1,2,3,4,5,...

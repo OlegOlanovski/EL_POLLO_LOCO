@@ -3,6 +3,7 @@ let world;
 let keyboard = new Keyboard();
 let startScreen;
 let startButton;
+let restartButton;
 let gameContainer;
 let fullscreenButton;
 let fullscreenExitButton;
@@ -24,6 +25,7 @@ function init() {
   canvas = document.getElementById("canvas");
   startScreen = document.getElementById("startScreen");
   startButton = document.getElementById("startButton");
+  restartButton = document.getElementById("restartButton");
   gameContainer = document.querySelector(".game-container");
   fullscreenButton = document.getElementById("fullscreenButton");
   fullscreenExitButton = document.getElementById("fullscreenExitButton");
@@ -56,8 +58,8 @@ function startGame() {
 
   initLevel();
   startScreen?.classList.add("d-none");
+  restartButton?.classList.add("d-none");
   closeHowToPlay();
-  document.querySelector(".site-footer")?.classList.add("d-none");
   playBackgroundMusic();
   world = new World(canvas, keyboard);
   applyMuteStateToAudio(world, backgroundMusic);
@@ -76,7 +78,7 @@ function playBackgroundMusic() {
 }
 
 /**
- * Displays the win screen and schedules the reset.
+ * Displays the win screen.
  */
 function showWinScreen() {
   stopBackgroundMusic();
@@ -85,10 +87,7 @@ function showWinScreen() {
   startScreen?.classList.add("final-screen");
   startScreen?.classList.add("win-screen");
   startButton?.classList.add("d-none");
-
-  setTimeout(() => {
-    resetToStartScreen();
-  }, 4000);
+  restartButton?.classList.remove("d-none");
 }
 
 /**
@@ -101,6 +100,7 @@ function showLoseScreen() {
   startScreen?.classList.add("final-screen");
   startScreen?.classList.add("lose-screen");
   startButton?.classList.add("d-none");
+  restartButton?.classList.remove("d-none");
 
   setTimeout(() => {
     showGameOverScreen();
@@ -108,15 +108,12 @@ function showLoseScreen() {
 }
 
 /**
- * Displays the game-over screen and schedules the reset.
+ * Displays the game-over screen.
  */
 function showGameOverScreen() {
   startScreen?.classList.remove("lose-screen");
   startScreen?.classList.add("game-over-screen");
-
-  setTimeout(() => {
-    resetToStartScreen();
-  }, 2500);
+  restartButton?.classList.remove("d-none");
 }
 
 /**

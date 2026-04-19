@@ -33,7 +33,7 @@ class Statusbar extends MovableObject {
     let path = this.IMAGES[this.resolveImageIndex()];
     this.img = this.imageCache[path]; // Updates the image according to the new percentage.
   }
-  
+
   /**
    * Resolve image index.
    * @returns {number} Calculated numeric value.

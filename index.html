@@ -40,6 +40,7 @@
         <div id="startScreen" class="start-screen">
             <div class="start-actions">
                 <button id="startButton" onclick="startGame()" class="start-button">Start Game</button>
+                <button id="restartButton" onclick="resetToStartScreen()" class="start-button d-none">BACK TO START</button>
                 <button id="howToPlayButton" type="button" class="how-to-play-button" aria-label="Anleitung">?</button>
             </div>
         </div>
@@ -60,9 +61,6 @@
                 <path d="M4 15H9V20"></path>
             </svg>
         </button>
-        <footer class="site-footer">
-            <a href="impressum.html" aria-label="Impressum">Impressum</a>
-        </footer>
         <button id="muteButton" type="button" class="mute-button" aria-label="Sound einschalten">
             <svg class="mute-button-icon mute-button-icon-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M4 9V15H8L13 20V4L8 9H4Z"></path>
@@ -100,6 +98,9 @@
             </div>
         </div>
     </div>
+    <footer class="site-footer">
+        <a href="impressum.html">Impressum</a>
+    </footer>
     <div id="howToPlayOverlay" class="how-to-play-overlay d-none" role="dialog" aria-modal="true" aria-labelledby="howToPlayTitle">
         <div class="how-to-play-dialog">
             <button id="howToPlayCloseButton" type="button" class="how-to-play-close-button" aria-label="Anleitung schliessen">X</button>

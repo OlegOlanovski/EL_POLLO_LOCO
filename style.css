@@ -134,6 +134,11 @@ canvas {
   display: none;
 }
 
+.final-screen .start-actions {
+  margin-top: auto;
+  margin-bottom: 24px;
+}
+
 .lose-screen {
   background-image: url("img/You won, you lost/You lost.png");
 }
@@ -285,11 +290,7 @@ canvas {
 }
 
 .site-footer {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 30;
-  margin: 0;
+  margin-top: 12px;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -301,26 +302,20 @@ canvas {
 }
 
 .site-footer a {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
+  display: inline-block;
+  padding: 8px 18px;
   border: 2px solid #7a2f00;
-  border-radius: 50%;
-  background-color: rgba(255, 207, 67, 0.86);
+  border-radius: 8px;
+  background-color: #ffcf43;
   color: #4a1d00;
-  font-size: 0;
+  font-size: 18px;
   font-weight: bold;
-  line-height: 1;
+  line-height: 1.2;
   text-decoration: none;
   touch-action: manipulation;
 }
 
-.site-footer a::before {
-  content: "i";
-  font-size: 22px;
-}
-
+.site-footer a:hover,
 .site-footer a:active {
   background-color: #ffb72b;
 }
@@ -655,18 +650,12 @@ canvas {
   }
 
   .site-footer {
-    top: 8px;
-    right: 8px;
+    margin-top: 8px;
   }
 
   .site-footer a {
-    width: 34px;
-    height: 34px;
-  }
-
-  .site-footer a::before {
-    content: "i";
-    font-size: 22px;
+    padding: 6px 14px;
+    font-size: 15px;
   }
 
   .mute-button {
@@ -858,19 +847,9 @@ canvas {
     font-size: 26px;
   }
 
-  .site-footer {
-    top: 6px;
-    right: 6px;
-  }
-
   .site-footer a {
-    width: 30px;
-    height: 30px;
-  }
-
-  .site-footer a::before {
-    content: "i";
-    font-size: 20px;
+    padding: 5px 12px;
+    font-size: 14px;
   }
 
   .mute-button {
@@ -943,7 +922,7 @@ canvas {
   }
 
   body:not(.legal-page) {
-    justify-content: center;
+    justify-content: flex-start;
     padding: 8px;
   }
 
@@ -954,7 +933,11 @@ canvas {
   }
 
   .game-container {
-    width: min(calc(100vw - 16px), 145vh);
+    width: min(calc(100vw - 16px), calc(150vh - 90px));
+  }
+
+  .site-footer {
+    margin-top: 6px;
   }
 }
 
@@ -968,7 +951,7 @@ canvas {
   }
 
   body:not(.legal-page) {
-    justify-content: center;
+    justify-content: flex-start;
     padding: 4px;
   }
 
@@ -979,7 +962,16 @@ canvas {
   }
 
   .game-container {
-    width: min(calc(100vw - 8px), 145vh);
+    width: min(calc(100vw - 8px), calc(150vh - 66px));
+  }
+
+  .site-footer {
+    margin-top: 4px;
+  }
+
+  .site-footer a {
+    padding: 4px 10px;
+    font-size: 13px;
   }
 
   .mobile-controls {
@@ -1035,13 +1027,13 @@ canvas {
 @supports (height: 100dvh) {
   @media (min-aspect-ratio: 1/1) and (max-height: 760px) {
     .game-container {
-      width: min(calc(100vw - 16px), 145dvh);
+      width: min(calc(100vw - 16px), calc(150dvh - 90px));
     }
   }
 
   @media (min-aspect-ratio: 1/1) and (max-height: 560px) {
     .game-container {
-      width: min(calc(100vw - 8px), 145dvh);
+      width: min(calc(100vw - 8px), calc(150dvh - 66px));
     }
   }
 }

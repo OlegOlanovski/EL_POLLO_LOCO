@@ -13,8 +13,6 @@ class DrawableObjekt {
       right: 0,
     };
 
-
-
     /**
      * Loads an image from the given path.
      * @param {string} path - Path to the image file.
@@ -38,13 +36,12 @@ class DrawableObjekt {
       );
     }
 
-
   /**
    * Draws the collision frame for debugging.
    * @param {CanvasRenderingContext2D} ctx - Canvas rendering context.
    */
   drawFrame(ctx) {
-  }  
+  }
 
   /**
    * Loads multiple image paths into the image cache.

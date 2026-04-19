@@ -12,8 +12,6 @@ class Endboss extends MovableObject {
   panic_sound = new Audio("audio/panic.mp3");
   hasPlayedPanicSound = false;
   isActive = false;
-  hasStartedPatrol = false;
-  patrolStartDelay = 2000;
   offset = {
     top: 60,
     bottom: 20,
@@ -100,7 +98,7 @@ class Endboss extends MovableObject {
         return;
       }
 
-      if (!this.isActive || !this.hasStartedPatrol) {
+      if (!this.isActive) {
         return;
       }
 
@@ -116,9 +114,7 @@ class Endboss extends MovableObject {
       return;
     }
     this.checkPanicSound();
-    if (this.hasStartedPatrol) {
-      this.patrol();
-    }
+    this.patrol();
   }
 
   /**
@@ -143,17 +139,7 @@ class Endboss extends MovableObject {
   activateEndboss() {
     if (!this.isActive && this.isVisibleOnScreen()) {
       this.isActive = true;
-      this.startPatrolAfterDelay();
     }
-  }
-
-  /**
-   * Starts endboss patrol after the configured delay.
-   */
-  startPatrolAfterDelay() {
-    setTimeout(() => {
-      this.hasStartedPatrol = true;
-    }, this.patrolStartDelay);
   }
 
   /**

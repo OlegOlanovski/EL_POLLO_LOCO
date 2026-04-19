@@ -33,11 +33,8 @@ class ThrowableObject extends MovableObject {
        this.width = 80;
        this.height = 80;
        this.trow();
-       
-        
+
     }
-
-
 
     /**
      * Throws the bottle in the current direction.

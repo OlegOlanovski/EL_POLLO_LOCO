@@ -1,9 +1,9 @@
 let level1;
+
 /**
  * Initializes the first level with enemies, scenery, collectibles, and bottles.
  */
 function initLevel() {
-
 
 level1 = new Level(
   [
