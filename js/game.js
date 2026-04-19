@@ -8,6 +8,10 @@ let fullscreenButton;
 let fullscreenExitButton;
 let startControls;
 let mobileControls;
+let howToPlayOverlay;
+let howToPlayButton;
+let howToPlayCloseButton;
+let muteButton;
 let backgroundMusic = new Audio("audio/game-sound.mp3");
 
 backgroundMusic.loop = true;
@@ -25,6 +29,14 @@ function init() {
   fullscreenExitButton = document.getElementById("fullscreenExitButton");
   startControls = document.getElementById("startControls");
   mobileControls = document.getElementById("mobileControls");
+  howToPlayOverlay = document.getElementById("howToPlayOverlay");
+  howToPlayButton = document.getElementById("howToPlayButton");
+  howToPlayCloseButton = document.getElementById("howToPlayCloseButton");
+  muteButton = document.getElementById("muteButton");
+  bindMuteButton(muteButton, () => world, backgroundMusic);
+  applyMuteStateToAudio(world, backgroundMusic);
+  updateMuteButton(muteButton);
+  bindHowToPlayDialog();
   bindMobileControls();
 }
 
@@ -44,9 +56,11 @@ function startGame() {
 
   initLevel();
   startScreen?.classList.add("d-none");
+  closeHowToPlay();
   document.querySelector(".site-footer")?.classList.add("d-none");
   playBackgroundMusic();
   world = new World(canvas, keyboard);
+  applyMuteStateToAudio(world, backgroundMusic);
 
   console.log("My Character:", world.character);
 }
@@ -156,6 +170,53 @@ document.addEventListener("fullscreenchange", updateFullscreenButton);
 document.addEventListener("webkitfullscreenchange", updateFullscreenButton);
 
 /**
+ * Binds the instruction dialog controls.
+ */
+function bindHowToPlayDialog() {
+  if (!howToPlayOverlay || !howToPlayButton || !howToPlayCloseButton) {
+    return;
+  }
+  howToPlayButton.addEventListener("click", openHowToPlay);
+  howToPlayCloseButton.addEventListener("click", closeHowToPlay);
+  howToPlayOverlay.addEventListener("click", handleHowToPlayOverlayClick);
+  document.addEventListener("keydown", handleHowToPlayKeyDown);
+}
+
+/**
+ * Opens the instruction dialog.
+ */
+function openHowToPlay() {
+  howToPlayOverlay?.classList.remove("d-none");
+}
+
+/**
+ * Closes the instruction dialog.
+ */
+function closeHowToPlay() {
+  howToPlayOverlay?.classList.add("d-none");
+}
+
+/**
+ * Closes the instruction dialog when the backdrop is clicked.
+ * @param {MouseEvent} event - Click event.
+ */
+function handleHowToPlayOverlayClick(event) {
+  if (event.target === howToPlayOverlay) {
+    closeHowToPlay();
+  }
+}
+
+/**
+ * Closes the instruction dialog when Escape is pressed.
+ * @param {KeyboardEvent} event - Keyboard event.
+ */
+function handleHowToPlayKeyDown(event) {
+  if (event.key === "Escape") {
+    closeHowToPlay();
+  }
+}
+
+/**
  * Checks whether the viewport is a blocked mobile portrait layout.
  * @returns {boolean} Result of the check.
  */
@@ -260,10 +321,21 @@ function setMobileKey(event, key, isPressed) {
  * @param {Event} event - Input event.
  */
 function handleKeyDown(event) {
+  if (isHowToPlayOpen()) {
+    return;
+  }
   setKeyboardState(event.keyCode, true);
   if (event.keyCode == 13) {
     startGame();
   }
+}
+
+/**
+ * Checks whether the instruction dialog is currently open.
+ * @returns {boolean} Result of the check.
+ */
+function isHowToPlayOpen() {
+  return Boolean(howToPlayOverlay && !howToPlayOverlay.classList.contains("d-none"));
 }
 
 /**

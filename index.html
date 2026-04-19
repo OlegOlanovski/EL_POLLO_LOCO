@@ -21,6 +21,7 @@
     <script src="models/bottle.class.js" defer></script>
     <script src="models/coin.class.js" defer></script>
     <script src="levels/level1.js" defer></script>
+    <script src="js/sound.js" defer></script>
     <script src="js/game.js" defer></script>
     <link rel="icon" type="image/png" href="img/7_statusbars/3_icons/icon_salsa_bottle.png">
 
@@ -37,7 +38,10 @@
     <div class="game-container">
         <canvas id="canvas" width="720" height="480"></canvas>
         <div id="startScreen" class="start-screen">
-            <button id="startButton" onclick="startGame()" class="start-button">Start Game</button>
+            <div class="start-actions">
+                <button id="startButton" onclick="startGame()" class="start-button">Start Game</button>
+                <button id="howToPlayButton" type="button" class="how-to-play-button" aria-label="Anleitung">?</button>
+            </div>
         </div>
         <button type="button" onclick="openFullscreen()" class="mobile-fullscreen-button" aria-label="Open fullscreen">
             <svg class="mobile-fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -59,6 +63,18 @@
         <footer class="site-footer">
             <a href="impressum.html" aria-label="Impressum">Impressum</a>
         </footer>
+        <button id="muteButton" type="button" class="mute-button" aria-label="Sound einschalten">
+            <svg class="mute-button-icon mute-button-icon-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4 9V15H8L13 20V4L8 9H4Z"></path>
+                <path d="M16 8C17.5 10 17.5 14 16 16"></path>
+                <path d="M18.5 5.5C21.5 9 21.5 15 18.5 18.5"></path>
+            </svg>
+            <svg class="mute-button-icon mute-button-icon-off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4 9V15H8L13 20V4L8 9H4Z"></path>
+                <path d="M17 9L21 13"></path>
+                <path d="M21 9L17 13"></path>
+            </svg>
+        </button>
         <div id="mobileControls" class="mobile-controls" aria-label="Game controls">
             <div class="mobile-control-group">
                 <button type="button" class="mobile-control-button" data-key="LEFT" aria-label="Move left">
@@ -82,6 +98,20 @@
                     <img class="mobile-control-icon mobile-control-icon-bottle" src="img/7_statusbars/3_icons/icon_salsa_bottle.png" alt="" aria-hidden="true">
                 </button>
             </div>
+        </div>
+    </div>
+    <div id="howToPlayOverlay" class="how-to-play-overlay d-none" role="dialog" aria-modal="true" aria-labelledby="howToPlayTitle">
+        <div class="how-to-play-dialog">
+            <button id="howToPlayCloseButton" type="button" class="how-to-play-close-button" aria-label="Anleitung schliessen">X</button>
+            <h2 id="howToPlayTitle">So spielst du</h2>
+            <p>Laufe durch die Wueste, sammle Muenzen und Salsa-Flaschen und besiege am Ende das grosse Huhn.</p>
+            <ul>
+                <li><b>Pfeiltasten</b> bewegen Pepe nach links und rechts.</li>
+                <li><b>Leertaste</b> laesst Pepe springen.</li>
+                <li><b>D</b> wirft eine Salsa-Flasche.</li>
+                <li>Springe auf Huehner oder triff sie mit Flaschen.</li>
+                <li>Sammle Flaschen vor dem Bosskampf.</li>
+            </ul>
         </div>
     </div>
     <div id="startControls" class="start-controls">
