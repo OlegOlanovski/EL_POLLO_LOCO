@@ -13,6 +13,9 @@ let backgroundMusic = new Audio("audio/game-sound.mp3");
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.3;
 
+/**
+ * Initializes the game elements and binds mobile controls.
+ */
 function init() {
   canvas = document.getElementById("canvas");
   startScreen = document.getElementById("startScreen");
@@ -25,6 +28,9 @@ function init() {
   bindMobileControls();
 }
 
+/**
+ * Starts a new game when the current viewport allows gameplay.
+ */
 function startGame() {
   if (isGamePausedByOrientation()) {
     return;
@@ -45,6 +51,9 @@ function startGame() {
   console.log("My Character:", world.character);
 }
 
+/**
+ * Starts the background music from the beginning.
+ */
 function playBackgroundMusic() {
   backgroundMusic.currentTime = 0;
   backgroundMusic.play().catch((error) => {
@@ -52,6 +61,9 @@ function playBackgroundMusic() {
   });
 }
 
+/**
+ * Displays the win screen and schedules the reset.
+ */
 function showWinScreen() {
   stopBackgroundMusic();
   canvas?.classList.add("d-none");
@@ -65,6 +77,9 @@ function showWinScreen() {
   }, 4000);
 }
 
+/**
+ * Displays the lose screen and schedules the game-over screen.
+ */
 function showLoseScreen() {
   stopBackgroundMusic();
   canvas?.classList.add("d-none");
@@ -78,6 +93,9 @@ function showLoseScreen() {
   }, 2500);
 }
 
+/**
+ * Displays the game-over screen and schedules the reset.
+ */
 function showGameOverScreen() {
   startScreen?.classList.remove("lose-screen");
   startScreen?.classList.add("game-over-screen");
@@ -87,15 +105,24 @@ function showGameOverScreen() {
   }, 2500);
 }
 
+/**
+ * Reloads the page to reset the game.
+ */
 function resetToStartScreen() {
   window.location.reload();
 }
 
+/**
+ * Stops the background music and resets it to the beginning.
+ */
 function stopBackgroundMusic() {
   backgroundMusic.pause();
   backgroundMusic.currentTime = 0;
 }
 
+/**
+ * Requests fullscreen mode for the game container.
+ */
 function openFullscreen() {
   if (gameContainer.requestFullscreen) {
     gameContainer.requestFullscreen();
@@ -104,6 +131,9 @@ function openFullscreen() {
   }
 }
 
+/**
+ * Exits fullscreen mode when supported.
+ */
 function exitFullscreen() {
   if (document.exitFullscreen) {
     document.exitFullscreen();
@@ -112,6 +142,9 @@ function exitFullscreen() {
   }
 }
 
+/**
+ * Updates the visible fullscreen control for the current fullscreen state.
+ */
 function updateFullscreenButton() {
   let isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
 
@@ -122,6 +155,10 @@ function updateFullscreenButton() {
 document.addEventListener("fullscreenchange", updateFullscreenButton);
 document.addEventListener("webkitfullscreenchange", updateFullscreenButton);
 
+/**
+ * Checks whether the viewport is a blocked mobile portrait layout.
+ * @returns {boolean} Result of the check.
+ */
 function isMobilePortrait() {
   return (
     window.matchMedia("(max-width: 760px)").matches &&
@@ -129,6 +166,10 @@ function isMobilePortrait() {
   );
 }
 
+/**
+ * Checks whether the device has a phone-sized touch viewport.
+ * @returns {boolean} Result of the check.
+ */
 function isPhoneSizedTouchDevice() {
   let hasTouchInput = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
   let hasPhoneViewport =
@@ -138,10 +179,17 @@ function isPhoneSizedTouchDevice() {
   return hasTouchInput && hasPhoneViewport;
 }
 
+/**
+ * Checks whether gameplay should pause because of orientation.
+ * @returns {boolean} Result of the check.
+ */
 function isGamePausedByOrientation() {
   return isMobilePortrait();
 }
 
+/**
+ * Clears all active keyboard states.
+ */
 function releaseKeyboard() {
   keyboard.LEFT = false;
   keyboard.RIGHT = false;
@@ -151,6 +199,9 @@ function releaseKeyboard() {
   keyboard.D = false;
 }
 
+/**
+ * Releases controls when the viewport switches to blocked portrait mode.
+ */
 function handleOrientationChange() {
   if (isMobilePortrait()) {
     releaseKeyboard();
@@ -160,69 +211,97 @@ function handleOrientationChange() {
 window.addEventListener("resize", handleOrientationChange);
 window.addEventListener("orientationchange", handleOrientationChange);
 
+/**
+ * Binds all mobile control buttons.
+ */
 function bindMobileControls() {
   if (!mobileControls) {
     return;
   }
 
-  mobileControls.querySelectorAll("[data-key]").forEach((button) => {
-    let key = button.dataset.key;
+  mobileControls.querySelectorAll("[data-key]").forEach(bindMobileControlButton);
+}
 
-    button.addEventListener("pointerdown", (event) => {
-      event.preventDefault();
-      keyboard[key] = true;
-    });
-
-    ["pointerup", "pointerleave", "pointercancel"].forEach((eventName) => {
-      button.addEventListener(eventName, (event) => {
-        event.preventDefault();
-        keyboard[key] = false;
-      });
-    });
+/**
+ * Binds pointer events for a mobile control button.
+ * @param {HTMLButtonElement} button - Mobile control button.
+ */
+function bindMobileControlButton(button) {
+  let key = button.dataset.key;
+  button.addEventListener("pointerdown", (event) => setMobileKey(event, key, true));
+  ["pointerup", "pointerleave", "pointercancel"].forEach((eventName) => {
+    bindMobileKeyRelease(button, eventName, key);
   });
 }
 
-window.addEventListener("keydown", (e) => {
-  if (e.keyCode == 39) {
-    keyboard.RIGHT = true;
-  }
-  if (e.keyCode == 37) {
-    keyboard.LEFT = true;
-  }
-  if (e.keyCode == 38) {
-    keyboard.UP = true;
-  }
-  if (e.keyCode == 40) {
-    keyboard.DOWN = true;
-  }
-  if (e.keyCode == 32) {
-    keyboard.SPACE = true;
-  } 
-  if (e.keyCode == 68) {
-    keyboard.D = true;
-  }
-  if (e.keyCode == 13) {
+/**
+ * Binds one pointer release event for a mobile control button.
+ * @param {HTMLButtonElement} button - Mobile control button.
+ * @param {string} eventName - Pointer event name.
+ * @param {string} key - Keyboard state property.
+ */
+function bindMobileKeyRelease(button, eventName, key) {
+  button.addEventListener(eventName, (event) => setMobileKey(event, key, false));
+}
+
+/**
+ * Updates a keyboard state from a mobile control event.
+ * @param {Event} event - Input event.
+ * @param {string} key - Keyboard state property.
+ * @param {boolean} isPressed - Whether the key is pressed.
+ */
+function setMobileKey(event, key, isPressed) {
+  event.preventDefault();
+  keyboard[key] = isPressed;
+}
+
+/**
+ * Handles keyboard press events.
+ * @param {Event} event - Input event.
+ */
+function handleKeyDown(event) {
+  setKeyboardState(event.keyCode, true);
+  if (event.keyCode == 13) {
     startGame();
   }
-});
+}
 
-window.addEventListener("keyup", (e) => {
-  if (e.keyCode == 39) {
-    keyboard.RIGHT = false;
+/**
+ * Handles keyboard release events.
+ * @param {Event} event - Input event.
+ */
+function handleKeyUp(event) {
+  setKeyboardState(event.keyCode, false);
+}
+
+/**
+ * Updates the keyboard object for one key code.
+ * @param {number} keyCode - Keyboard key code.
+ * @param {boolean} isPressed - Whether the key is pressed.
+ */
+function setKeyboardState(keyCode, isPressed) {
+  let key = resolveKeyboardKey(keyCode);
+  if (key) {
+    keyboard[key] = isPressed;
   }
-  if (e.keyCode == 37) {
-    keyboard.LEFT = false;
-  }
-  if (e.keyCode == 38) {
-    keyboard.UP = false;
-  }
-  if (e.keyCode == 40) {
-    keyboard.DOWN = false;
-  }
-  if (e.keyCode == 32) {
-    keyboard.SPACE = false;
-  }
-    if (e.keyCode == 68) {  
-    keyboard.D = false;
-  }
-});
+}
+
+/**
+ * Maps a keyboard key code to a keyboard state property.
+ * @param {number} keyCode - Keyboard key code.
+ * @returns {string|undefined} Resolved value.
+ */
+function resolveKeyboardKey(keyCode) {
+  let keys = {
+    39: "RIGHT",
+    37: "LEFT",
+    38: "UP",
+    40: "DOWN",
+    32: "SPACE",
+    68: "D",
+  };
+  return keys[keyCode];
+}
+
+window.addEventListener("keydown", handleKeyDown);
+window.addEventListener("keyup", handleKeyUp);

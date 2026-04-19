@@ -699,6 +699,31 @@ canvas {
   }
 }
 
+@media (min-aspect-ratio: 1/1) and (max-height: 760px) {
+  html:not(.legal-document),
+  body:not(.legal-page) {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  body:not(.legal-page) {
+    justify-content: center;
+    padding: 8px;
+  }
+
+  body:not(.legal-page) h1,
+  .start-controls,
+  .fullscreen-button {
+    display: none;
+  }
+
+  .game-container {
+    width: min(calc(100vw - 16px), 145vh);
+  }
+}
+
 @media (min-aspect-ratio: 1/1) and (max-height: 560px) {
   html:not(.legal-document),
   body:not(.legal-page) {
@@ -774,6 +799,12 @@ canvas {
 }
 
 @supports (height: 100dvh) {
+  @media (min-aspect-ratio: 1/1) and (max-height: 760px) {
+    .game-container {
+      width: min(calc(100vw - 16px), 145dvh);
+    }
+  }
+
   @media (min-aspect-ratio: 1/1) and (max-height: 560px) {
     .game-container {
       width: min(calc(100vw - 8px), 145dvh);

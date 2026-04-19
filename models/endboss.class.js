@@ -55,6 +55,9 @@ class Endboss extends MovableObject {
     "img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
+  /**
+   * Creates a new instance and initializes its default state.
+   */
   constructor() {
     super().loadimage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
@@ -66,23 +69,32 @@ class Endboss extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Starts the animation intervals.
+   */
   animate() {
+    this.animateMovement();
+    this.animateImages();
+  }
+
+  /**
+   * Starts the movement animation interval.
+   */
+  animateMovement() {
     setInterval(() => {
       if (this.isGamePaused()) {
         return;
       }
 
       this.activateEndboss();
-      if (!this.isActive) {
-        return;
-      }
-      this.checkPanicSound();
-      if (!this.hasStartedPatrol) {
-        return;
-      }
-      this.patrol();
+      this.moveWhenReady();
     }, 1000 / 60);
+  }
 
+  /**
+   * Starts the image animation interval.
+   */
+  animateImages() {
     setInterval(() => {
       if (this.isGamePaused()) {
         return;
@@ -92,19 +104,42 @@ class Endboss extends MovableObject {
         return;
       }
 
-      if (this.isDead()) {
-        this.dead = true;
-        this.playAnimation(this.IMAGES_DEAD);
-      } else if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT);
-      } else if (this.isAttacking()) {
-        this.playAnimation(this.IMAGES_ATTACK);
-      } else {
-        this.playAnimation(this.IMAGES_WALKING);
-      }
+      this.playCurrentAnimation();
     }, 200);
   }
 
+  /**
+   * Move when ready.
+   */
+  moveWhenReady() {
+    if (!this.isActive) {
+      return;
+    }
+    this.checkPanicSound();
+    if (this.hasStartedPatrol) {
+      this.patrol();
+    }
+  }
+
+  /**
+   * Plays the animation that matches the current state.
+   */
+  playCurrentAnimation() {
+    if (this.isDead()) {
+      this.dead = true;
+      this.playAnimation(this.IMAGES_DEAD);
+    } else if (this.isHurt()) {
+      this.playAnimation(this.IMAGES_HURT);
+    } else if (this.isAttacking()) {
+      this.playAnimation(this.IMAGES_ATTACK);
+    } else {
+      this.playAnimation(this.IMAGES_WALKING);
+    }
+  }
+
+  /**
+   * Activates the endboss when it becomes visible.
+   */
   activateEndboss() {
     if (!this.isActive && this.isVisibleOnScreen()) {
       this.isActive = true;
@@ -112,18 +147,28 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Starts endboss patrol after the configured delay.
+   */
   startPatrolAfterDelay() {
     setTimeout(() => {
       this.hasStartedPatrol = true;
     }, this.patrolStartDelay);
   }
 
+  /**
+   * Plays the panic sound once when the endboss appears.
+   */
   checkPanicSound() {
     if (!this.hasPlayedPanicSound && !this.isDead() && this.isVisibleOnScreen()) {
       this.playPanicSound();
     }
   }
 
+  /**
+   * Checks whether the endboss is visible on the canvas.
+   * @returns {boolean} Result of the check.
+   */
   isVisibleOnScreen() {
     if (!this.world) {
       return false;
@@ -134,6 +179,9 @@ class Endboss extends MovableObject {
     return screenRight > 0 && screenLeft < this.world.canvas.width;
   }
 
+  /**
+   * Plays the endboss panic sound.
+   */
   playPanicSound() {
     this.hasPlayedPanicSound = true;
     this.panic_sound.currentTime = 0;
@@ -142,8 +190,11 @@ class Endboss extends MovableObject {
     });
   }
 
+  /**
+   * Moves the endboss along its patrol path.
+   */
   patrol() {
-    if (this.isDead() || this.isHurt() || this.isAttacking()) { // Endboss bewegt sich nicht, wenn er tot, verletzt oder angreift
+    if (this.isDead() || this.isHurt() || this.isAttacking()) { // Endboss does not move while dead, hurt, or attacking.
       return;
     }
 
@@ -157,28 +208,50 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Moves the endboss forward on its patrol path.
+   */
   walkForward() {
     this.moveLeft();
     this.otherDirection = false;
   }
 
+  /**
+   * Moves the endboss back on its patrol path.
+   */
   walkBack() {
     this.moveRight();
     this.otherDirection = true;
   }
 
+  /**
+   * Is attacking.
+   * @returns {boolean} Result of the check.
+   */
   isAttacking() {
     return this.world && this.getDistanceToCharacter() < this.attackDistance;
   }
 
+  /**
+   * Calculates the horizontal distance to the character.
+   * @returns {number} Calculated numeric value.
+   */
   getDistanceToCharacter() {
     return Math.abs(this.getCenterX() - this.getCharacterCenterX());
   }
 
+  /**
+   * Calculates the horizontal center of the object.
+   * @returns {number} Calculated numeric value.
+   */
   getCenterX() {
     return this.x + this.width / 2;
   }
 
+  /**
+   * Calculates the horizontal center of the character.
+   * @returns {number} Calculated numeric value.
+   */
   getCharacterCenterX() {
     return this.world.character.x + this.world.character.width / 2;
   }

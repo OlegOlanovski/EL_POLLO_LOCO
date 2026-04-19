@@ -9,6 +9,9 @@ class MovableObject extends DrawableObjekt {
   hurtDuration = 1;
   gravityIntervalId;
 
+  /**
+   * Applies gravity to the movable object.
+   */
   applyGravity() {
     this.gravityIntervalId = setInterval(() => {
       if (this.isGamePaused()) {
@@ -23,20 +26,31 @@ class MovableObject extends DrawableObjekt {
     }, 1000 / 25);
   }
 
+  /**
+   * Is game paused.
+   * @returns {boolean} Result of the check.
+   */
   isGamePaused() {
     return typeof isGamePausedByOrientation === "function" && isGamePausedByOrientation();
   }
 
+  /**
+   * Stops the gravity interval.
+   */
   stopGravity() {
     clearInterval(this.gravityIntervalId);
     this.gravityIntervalId = null;
   }
 
+  /**
+   * Is above ground.
+   * @returns {boolean} Result of the check.
+   */
   isAboveGround() {
-    if (this instanceof ThrowableObject) { // ThrowableObjects können nicht unter die Erde fallen
+    if (this instanceof ThrowableObject) { // Throwable objects cannot fall below the ground.
       return true; 
     } else {
-      return this.y < 180; // Andere Objekte sind über dem Boden, wenn y < 180
+      return this.y < 180; // Other objects are above ground when y is below 180.
     }
 
    
@@ -46,7 +60,12 @@ class MovableObject extends DrawableObjekt {
 
 
 
-  // Überprüft, ob dieses Objekt mit einem anderen beweglichen Objekt kollidiert character.isColliding(enemy)
+  // Checks whether this object collides with another movable object.
+  /**
+   * Is colliding.
+   * @param {MovableObject} movableObject - Object to draw or transform.
+   * @returns {boolean} Result of the check.
+   */
   isColliding(movableObject) {
     return (
       this.x + this.width - this.offset.right > movableObject.x + movableObject.offset.left &&
@@ -56,21 +75,33 @@ class MovableObject extends DrawableObjekt {
     );
   }
 
+  /**
+   * Reduces the object energy by the given damage amount.
+   * @param {number} damage - Damage amount to apply.
+   */
   hit(damage = 5) {
     this.energy -= damage;
     if (this.energy < 0) {
-      this.energy = 0; // Energie kann nicht negativ sein
+      this.energy = 0; // Energy cannot be negative.
     } else {
-      this.lastHit = new Date().getTime(); // Zeitstempel des letzten Treffers
+      this.lastHit = new Date().getTime(); // Timestamp of the last hit.
     }
   }  
 
+  /**
+   * Is hurt.
+   * @returns {boolean} Result of the check.
+   */
   isHurt() {
-    let timePassed = new Date().getTime() - this.lastHit; // Zeit seit dem letzten Treffer
-    timePassed = timePassed / 1000; // Umwandeln in Sekunden
-    return timePassed < this.hurtDuration; // Wenn weniger als hurtDuration vergangen ist, gilt das Objekt als verletzt
+    let timePassed = new Date().getTime() - this.lastHit; // Time since the last hit.
+    timePassed = timePassed / 1000; // Converts milliseconds to seconds.
+    return timePassed < this.hurtDuration; // The object is hurt while the hurt duration has not passed.
   }
 
+  /**
+   * Is dead.
+   * @returns {boolean} Result of the check.
+   */
   isDead() {
     return this.energy === 0;
   } 
@@ -79,24 +110,37 @@ class MovableObject extends DrawableObjekt {
 
 
 
+  /**
+   * Displays the next image of an animation sequence.
+   * @param {string[]} images - Animation image paths.
+   */
   playAnimation(images) {
     
 
-    let i = this.currentImage % images.length; // let i = 7 % 6; => 1, Rest 1
+    let i = this.currentImage % images.length; // let i = 7 % 6; => 1, remainder 1
     // let i = this.currentImage % 6; => 0,1,2,3,4,5,0,1,2,3,4,5,...
     let path = images[i];
     this.img = this.imageCache[path];
     this.currentImage++;
   }
 
+  /**
+   * Moves the object to the right.
+   */
   moveRight() {
     this.x += this.speed; // Move to the right
   }
 
+  /**
+   * Moves the object to the left.
+   */
   moveLeft() {
     this.x -= this.speed; // Move to the left
   }
 
+  /**
+   * Starts a jump movement.
+   */
   jump() {
     this.speedY = 30; // Jumping speed
   }

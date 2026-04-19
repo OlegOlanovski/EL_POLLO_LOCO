@@ -58,6 +58,9 @@ IMAGES_HURT = [
   fire_sound = new Audio("audio/fire.mp3");
   jumping_sound_timeout;
 
+  /**
+   * Creates a new instance and initializes its default state.
+   */
   constructor() {
     super().loadimage(this.IMAGE_IDLE);
     this.loadImages(this.IMAGES_WALKING);
@@ -68,56 +71,100 @@ IMAGES_HURT = [
     this.animate();
   }
 
+  /**
+   * Starts the animation intervals.
+   */
   animate() {
+    this.animateMovement();
+    this.animateImages();
+  }
+
+  /**
+   * Starts the movement animation interval.
+   */
+  animateMovement() {
     setInterval(() => {
       if (this.isGamePaused()) {
         return;
       }
 
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-        this.moveRight();
-        this.otherDirection = false;
-      }
-      if (this.world.keyboard.LEFT && this.x > 0) {
-        this.moveLeft();
-        this.otherDirection = true;
-      }
-      if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-        this.jump();
-      }
-      this.world.camera_x = -this.x + 100; // Kamera folgt dem Charakter
+      this.moveByKeyboard();
+      this.jumpByKeyboard();
+      this.updateCamera();
     }, 1000 / 60); // 60 frames per second
+  }
 
+  /**
+   * Starts the image animation interval.
+   */
+  animateImages() {
     setInterval(() => {
       if (this.isGamePaused()) {
         return;
       }
 
-      if(this.isDead()) {   // Death animation
-        this.playAnimation(this.IMAGES_DEAD);
-        
-      } else if(this.isHurt()) { // Hurt animation
-        this.playAnimation(this.IMAGES_HURT);
-      }
-     else if (this.isAboveGround()) { // Character is in the air
-        // Jumping animation
-        this.playAnimation(this.IMAGES_JUMPING);
-      } else {
-        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-          // Walking animation
-          this.playAnimation(this.IMAGES_WALKING);
-        } else {
-          this.showIdleImage();
-        }
-      }
+      this.playCurrentAnimation();
     }, 50);
   }
 
+  /**
+   * Moves the character based on keyboard input.
+   */
+  moveByKeyboard() {
+    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+      this.moveRight();
+      this.otherDirection = false;
+    }
+    if (this.world.keyboard.LEFT && this.x > 0) {
+      this.moveLeft();
+      this.otherDirection = true;
+    }
+  }
+
+  /**
+   * Starts a jump when the jump key is pressed.
+   */
+  jumpByKeyboard() {
+    if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+      this.jump();
+    }
+  }
+
+  /**
+   * Updates the camera position to follow the character.
+   */
+  updateCamera() {
+    this.world.camera_x = -this.x + 100; // Camera follows the character.
+  }
+
+  /**
+   * Plays the animation that matches the current state.
+   */
+  playCurrentAnimation() {
+    if (this.isDead()) {
+      this.playAnimation(this.IMAGES_DEAD);
+    } else if (this.isHurt()) {
+      this.playAnimation(this.IMAGES_HURT);
+    } else if (this.isAboveGround()) {
+      this.playAnimation(this.IMAGES_JUMPING);
+    } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+      this.playAnimation(this.IMAGES_WALKING);
+    } else {
+      this.showIdleImage();
+    }
+  }
+
+  /**
+   * Displays the idle image.
+   */
   showIdleImage() {
     this.currentImage = 0;
     this.img = this.imageCache[this.IMAGE_IDLE];
   }
 
+  /**
+   * Starts a jump movement.
+   */
   jump() {
     this.speedY = 30; // Jumping speed
     this.jumping_sound.currentTime = 0;
@@ -129,26 +176,41 @@ IMAGES_HURT = [
     }, 1000);
   }
 
+  /**
+   * Plays the damage sound.
+   */
   playDamageSound() {
     this.damage_sound.currentTime = 0;
     this.damage_sound.play();
   }
 
+  /**
+   * Plays the attack sound.
+   */
   playAttackSound() {
     this.attack_sound.currentTime = 0;
     this.attack_sound.play();
   }
 
+  /**
+   * Plays the coin pickup sound.
+   */
   playCoinSound() {
     this.coin_sound.currentTime = 0;
     this.coin_sound.play();
   }
 
+  /**
+   * Plays the bottle pickup sound.
+   */
   playBottleSound() {
     this.bottle_sound.currentTime = 0;
     this.bottle_sound.play();
   }
 
+  /**
+   * Plays the bottle throw sound.
+   */
   playFireSound() {
     this.fire_sound.currentTime = 0;
     this.fire_sound.play();

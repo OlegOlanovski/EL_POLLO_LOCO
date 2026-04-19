@@ -10,6 +10,9 @@ class Statusbar extends MovableObject {
 
   percentage = 100;
 
+  /**
+   * Creates a new instance and initializes its default state.
+   */
   constructor() {
     super();
     this.loadImages(this.IMAGES);
@@ -17,30 +20,31 @@ class Statusbar extends MovableObject {
     this.height = 48;
     this.x = 20;
     this.y = 0;
-    this.setPercentage(100); // Startet mit einem vollen Statusbalken
+    this.setPercentage(100); // Starts with a full status bar.
   }
 
-  // Setzt den Statusbalken entsprechend dem aktuellen Prozentsatz
+  // Sets the status bar according to the current percentage.
+  /**
+   * Updates the displayed status bar percentage.
+   * @param {number} percentage - Current percentage value.
+   */
   setPercentage(percentage) {
     this.percentage = percentage; // => 0 ...5
     let path = this.IMAGES[this.resolveImageIndex()];
-    this.img = this.imageCache[path]; // Aktualisiert das Bild entsprechend dem neuen Prozentsatz
+    this.img = this.imageCache[path]; // Updates the image according to the new percentage.
   }
   
+  /**
+   * Resolve image index.
+   * @returns {number} Calculated numeric value.
+   */
   resolveImageIndex() {
-    if (this.percentage == 100) {
-      return 5;
-    } else if (this.percentage >= 80) {
-      return 4;
-    } else if (this.percentage >= 60) {
-      return 3;
-    } else if (this.percentage >= 40) {
-      return 2;
-    } else if (this.percentage >= 20) {
-      return 1;
-    } else {
-      return 0;
-    }
+    if (this.percentage == 100) return 5;
+    if (this.percentage >= 80) return 4;
+    if (this.percentage >= 60) return 3;
+    if (this.percentage >= 40) return 2;
+    if (this.percentage >= 20) return 1;
+    return 0;
   }
 }
 
@@ -56,6 +60,9 @@ class StatusbarCoin extends MovableObject {
 
   percentage = 0;
 
+  /**
+   * Creates a new instance and initializes its default state.
+   */
   constructor() {
     super();
     this.loadImages(this.IMAGES);
@@ -66,26 +73,27 @@ class StatusbarCoin extends MovableObject {
     this.setPercentage(0);
   }
 
+  /**
+   * Updates the displayed status bar percentage.
+   * @param {number} percentage - Current percentage value.
+   */
   setPercentage(percentage) {
     this.percentage = percentage;
     let path = this.IMAGES[this.resolveImageIndex()];
     this.img = this.imageCache[path];
   }
 
+  /**
+   * Resolve image index.
+   * @returns {number} Calculated numeric value.
+   */
   resolveImageIndex() {
-    if (this.percentage == 100) {
-      return 5;
-    } else if (this.percentage >= 80) {
-      return 4;
-    } else if (this.percentage >= 60) {
-      return 3;
-    } else if (this.percentage >= 40) {
-      return 2;
-    } else if (this.percentage >= 20) {
-      return 1;
-    } else {
-      return 0;
-    }
+    if (this.percentage == 100) return 5;
+    if (this.percentage >= 80) return 4;
+    if (this.percentage >= 60) return 3;
+    if (this.percentage >= 40) return 2;
+    if (this.percentage >= 20) return 1;
+    return 0;
   }
 }
 
@@ -101,6 +109,9 @@ class StatusbarBottle extends MovableObject {
 
   percentage = 0;
 
+  /**
+   * Creates a new instance and initializes its default state.
+   */
   constructor() {
     super();
     this.loadImages(this.IMAGES);
@@ -111,26 +122,27 @@ class StatusbarBottle extends MovableObject {
     this.setPercentage(0);
   }
 
+  /**
+   * Updates the displayed status bar percentage.
+   * @param {number} percentage - Current percentage value.
+   */
   setPercentage(percentage) {
     this.percentage = percentage;
     let path = this.IMAGES[this.resolveImageIndex()];
     this.img = this.imageCache[path];
   }
 
+  /**
+   * Resolve image index.
+   * @returns {number} Calculated numeric value.
+   */
   resolveImageIndex() {
-    if (this.percentage == 100) {
-      return 5;
-    } else if (this.percentage >= 80) {
-      return 4;
-    } else if (this.percentage >= 60) {
-      return 3;
-    } else if (this.percentage >= 40) {
-      return 2;
-    } else if (this.percentage >= 20) {
-      return 1;
-    } else {
-      return 0;
-    }
+    if (this.percentage == 100) return 5;
+    if (this.percentage >= 80) return 4;
+    if (this.percentage >= 60) return 3;
+    if (this.percentage >= 40) return 2;
+    if (this.percentage >= 20) return 1;
+    return 0;
   }
 }
 
@@ -146,6 +158,9 @@ class StatusbarEndboss extends MovableObject {
 
   percentage = 100;
 
+  /**
+   * Creates a new instance and initializes its default state.
+   */
   constructor() {
     super();
     this.loadImages(this.IMAGES);
@@ -156,25 +171,26 @@ class StatusbarEndboss extends MovableObject {
     this.setPercentage(100);
   }
 
+  /**
+   * Updates the displayed status bar percentage.
+   * @param {number} percentage - Current percentage value.
+   */
   setPercentage(percentage) {
     this.percentage = percentage;
     let path = this.IMAGES[this.resolveImageIndex()];
     this.img = this.imageCache[path];
   }
 
+  /**
+   * Resolve image index.
+   * @returns {number} Calculated numeric value.
+   */
   resolveImageIndex() {
-    if (this.percentage == 100) {
-      return 5;
-    } else if (this.percentage >= 80) {
-      return 4;
-    } else if (this.percentage >= 60) {
-      return 3;
-    } else if (this.percentage >= 40) {
-      return 2;
-    } else if (this.percentage >= 20) {
-      return 1;
-    } else {
-      return 0;
-    }
+    if (this.percentage == 100) return 5;
+    if (this.percentage >= 80) return 4;
+    if (this.percentage >= 60) return 3;
+    if (this.percentage >= 40) return 2;
+    if (this.percentage >= 20) return 1;
+    return 0;
   }
 }

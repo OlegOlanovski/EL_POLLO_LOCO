@@ -15,11 +15,19 @@ class DrawableObjekt {
 
 
 
+    /**
+     * Loads an image from the given path.
+     * @param {string} path - Path to the image file.
+     */
     loadimage(path) {
         this.img = new Image(); // this.img = document.getElementById("image") <img id="image" src>;
         this.img.src = path;
       }
 
+      /**
+       * Draws the object on the canvas.
+       * @param {CanvasRenderingContext2D} ctx - Canvas rendering context.
+       */
       draw(ctx) {
         ctx.drawImage(
         this.img,
@@ -31,18 +39,22 @@ class DrawableObjekt {
     }
 
 
+  /**
+   * Draws the collision frame for debugging.
+   * @param {CanvasRenderingContext2D} ctx - Canvas rendering context.
+   */
   drawFrame(ctx) {
   }  
 
-      /**
-   *
-   * @param {Array} arr - ["img/1_character_pepe/1_walk/W-21.png", "img/1_character_pepe/1_walk/W-22.png", ...]
+  /**
+   * Loads multiple image paths into the image cache.
+   * @param {string[]} arr - Image paths to preload.
    */
   loadImages(arr) {
     arr.forEach((path) => {
       let img = new Image();
       img.src = path;
-      img.style = "transform: scaleX(-1)"; // Spiegeln des Bildes
+      img.style = "transform: scaleX(-1)"; // Mirrors the image.
       this.imageCache[path] = img;
     });
   }

@@ -4,6 +4,10 @@ class Cloud extends MovableObject {
   height = 250;
   resetX = 2600;
 
+  /**
+   * Creates a new instance and initializes its default state.
+   * @param {number} x - Horizontal start position.
+   */
   constructor(x) {
     super().loadimage("img/5_background/layers/4_clouds/1.png");
 
@@ -13,6 +17,9 @@ class Cloud extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Starts the animation intervals.
+   */
   animate() {
     setInterval(() => {
       if (this.isGamePaused()) {

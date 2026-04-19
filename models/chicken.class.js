@@ -12,6 +12,10 @@ class Chicken extends MovableObject {
 
   IMAGE_DEAD = "img/3_enemies_chicken/chicken_normal/2_dead/dead.png";
 
+  /**
+   * Creates a new instance and initializes its default state.
+   * @param {number} x - Horizontal start position.
+   */
   constructor(x) {
     super().loadimage("img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
     this.loadImages(this.IMAGES_WALKING);
@@ -22,7 +26,18 @@ class Chicken extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Starts the animation intervals.
+   */
   animate() {
+    this.animateMovement();
+    this.animateImages();
+  }
+
+  /**
+   * Starts the movement animation interval.
+   */
+  animateMovement() {
     setInterval(() => {
       if (this.isGamePaused()) {
         return;
@@ -32,7 +47,12 @@ class Chicken extends MovableObject {
         this.moveLeft();
       }
     }, 1000 / 60); // 60 frames per second
+  }
 
+  /**
+   * Starts the image animation interval.
+   */
+  animateImages() {
     setInterval(() => {
       if (this.isGamePaused()) {
         return;
@@ -44,6 +64,9 @@ class Chicken extends MovableObject {
     }, 200);
   }
 
+  /**
+   * Marks the chicken as dead and displays its dead image.
+   */
   die() {
     this.dead = true;
     this.img = this.imageCache[this.IMAGE_DEAD];
@@ -63,6 +86,10 @@ class SmallChicken extends Chicken {
 
   IMAGE_DEAD = "img/3_enemies_chicken/chicken_small/2_dead/dead.png";
 
+  /**
+   * Creates a new instance and initializes its default state.
+   * @param {number} x - Horizontal start position.
+   */
   constructor(x) {
     super(x);
     this.loadimage(this.IMAGES_WALKING[0]);
