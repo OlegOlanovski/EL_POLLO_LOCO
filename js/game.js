@@ -38,6 +38,7 @@ function startGame() {
 
   initLevel();
   startScreen?.classList.add("d-none");
+  document.querySelector(".site-footer")?.classList.add("d-none");
   playBackgroundMusic();
   world = new World(canvas, keyboard);
 
@@ -122,7 +123,10 @@ document.addEventListener("fullscreenchange", updateFullscreenButton);
 document.addEventListener("webkitfullscreenchange", updateFullscreenButton);
 
 function isMobilePortrait() {
-  return isPhoneSizedTouchDevice() && window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches;
+  return (
+    window.matchMedia("(max-width: 760px)").matches &&
+    window.innerHeight > window.innerWidth
+  );
 }
 
 function isPhoneSizedTouchDevice() {

@@ -191,17 +191,44 @@ canvas {
 }
 
 .site-footer {
-  margin-top: 14px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 30;
+  margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 14px;
 }
 
-.site-footer a,
 .back-link,
 .legal-content a {
-  color: #ffb72b;
+  color: #98312C;
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+.site-footer a {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 2px solid #7a2f00;
+  border-radius: 50%;
+  background-color: rgba(255, 207, 67, 0.86);
+  color: #4a1d00;
+  font-size: 0;
+  font-weight: bold;
+  line-height: 1;
+  text-decoration: none;
+  touch-action: manipulation;
+}
+
+.site-footer a::before {
+  content: "i";
+  font-size: 22px;
+}
+
+.site-footer a:active {
+  background-color: #ffb72b;
 }
 
 .legal-page {
@@ -360,8 +387,7 @@ canvas {
   display: none;
 }
 
-@media (hover: none) and (pointer: coarse) and (max-width: 760px),
-  (orientation: landscape) and (hover: none) and (pointer: coarse) and (max-height: 760px) {
+@media (max-width: 760px), (min-aspect-ratio: 1/1) and (max-height: 760px) {
   .fullscreen-exit-button:not(.d-none) {
     top: 8px;
     right: 8px;
@@ -393,7 +419,7 @@ canvas {
   }
 }
 
-@media (orientation: portrait) and (hover: none) and (pointer: coarse) and (max-width: 760px) {
+@media (max-aspect-ratio: 999/1000) and (max-width: 760px) {
   html:not(.legal-document),
   body:not(.legal-page) {
     height: 100vh;
@@ -460,6 +486,21 @@ canvas {
     font-size: 16px;
   }
 
+  .site-footer {
+    top: 8px;
+    right: 8px;
+  }
+
+  .site-footer a {
+    width: 34px;
+    height: 34px;
+  }
+
+  .site-footer a::before {
+    content: "i";
+    font-size: 22px;
+  }
+
   .mobile-fullscreen-button {
     width: 32px;
     height: 32px;
@@ -472,7 +513,7 @@ canvas {
   }
 }
 
-@media (hover: none) and (pointer: coarse) and (max-width: 760px) {
+@media (max-width: 760px) {
   .fullscreen-exit-button:not(.d-none) {
     width: 32px;
     height: 32px;
@@ -483,6 +524,31 @@ canvas {
   h1 {
     font-size: 42px;
     letter-spacing: 2px;
+  }
+
+  .legal-page {
+    padding: 12px;
+  }
+
+  .legal-content {
+    padding: 16px;
+  }
+
+  .legal-content h1 {
+    margin: 16px 0;
+    font-size: 44px;
+    letter-spacing: 2px;
+    overflow-wrap: anywhere;
+  }
+
+  .legal-content h2 {
+    margin: 20px 0 8px;
+    font-size: 20px;
+  }
+
+  .legal-content p,
+  .back-link {
+    font-size: 14px;
   }
 
   .game-container {
@@ -535,7 +601,7 @@ canvas {
   }
 }
 
-@media (hover: none) and (pointer: coarse) and (max-width: 520px) {
+@media (max-width: 520px) {
   .fullscreen-exit-button:not(.d-none) {
     top: 6px;
     right: 6px;
@@ -568,6 +634,21 @@ canvas {
   .start-controls {
     margin-top: 8px;
     font-size: 24px;
+  }
+
+  .site-footer {
+    top: 6px;
+    right: 6px;
+  }
+
+  .site-footer a {
+    width: 30px;
+    height: 30px;
+  }
+
+  .site-footer a::before {
+    content: "i";
+    font-size: 20px;
   }
 
   .fullscreen-button {
@@ -603,7 +684,7 @@ canvas {
   }
 }
 
-@media (hover: none) and (pointer: coarse) and (max-height: 560px) {
+@media (max-height: 560px) {
   .fullscreen-exit-button:not(.d-none) {
     top: 6px;
     right: 6px;
@@ -618,7 +699,7 @@ canvas {
   }
 }
 
-@media (orientation: landscape) and (max-height: 560px) {
+@media (min-aspect-ratio: 1/1) and (max-height: 560px) {
   html:not(.legal-document),
   body:not(.legal-page) {
     height: 100vh;
@@ -677,7 +758,7 @@ canvas {
   }
 }
 
-@media (orientation: landscape) and (hover: none) and (pointer: coarse) and (max-height: 560px) {
+@media (min-aspect-ratio: 1/1) and (max-height: 560px) {
   .fullscreen-exit-button:not(.d-none) {
     top: 6px;
     right: 6px;
@@ -693,7 +774,7 @@ canvas {
 }
 
 @supports (height: 100dvh) {
-  @media (orientation: landscape) and (max-height: 560px) {
+  @media (min-aspect-ratio: 1/1) and (max-height: 560px) {
     .game-container {
       width: min(calc(100vw - 8px), 145dvh);
     }
