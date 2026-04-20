@@ -16,8 +16,9 @@ class World {
   maxCoins = 5;
   gameFinished = false;
   enemyCollisionDamage = 20;
-  endbossBottleDamage = 34;
+  endbossBottleDamage = 20;
   enemyDamageCooldown = 500;
+  deadChickenRemoveDelay = 1000;
   lastEnemyDamage = 0;
 
   /**
@@ -320,7 +321,7 @@ class World {
       if (index > -1) {
         this.level.enemies.splice(index, 1);
       }
-    }, 500);
+    }, this.deadChickenRemoveDelay);
   }
 
   /** Draws the object on the canvas. */

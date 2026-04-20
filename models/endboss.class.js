@@ -2,8 +2,19 @@ class Endboss extends MovableObject {
   height = 400;
   width = 250;
   y = 50;
+  baseY = 50;
   dead = false;
-  speed = 5;
+  speed = 4;
+  minSpeed = 4;
+  maxSpeed = 8;
+  speedChange = 0.04;
+  isSpeedingUp = true;
+  isJumping = false;
+  jumpSpeedY = 0;
+  jumpStrength = 16;
+  jumpGravity = 0.8;
+  jumpDelay = 1600;
+  lastJumpTime = 0;
   startX = 2500;
   patrolDistance = 450;
   isMovingForward = true;
@@ -64,6 +75,7 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
 
     this.x = this.startX;
+    this.lastJumpTime = new Date().getTime();
     this.animate();
   }
 
@@ -114,6 +126,7 @@ class Endboss extends MovableObject {
       return;
     }
     this.checkPanicSound();
+    this.updateJump();
     this.patrol();
   }
 
@@ -184,6 +197,8 @@ class Endboss extends MovableObject {
       return;
     }
 
+    this.updatePatrolSpeed();
+
     if (this.isMovingForward && this.x > this.startX - this.patrolDistance) {
       this.walkForward();
     } else if (!this.isMovingForward && this.x < this.startX) {
@@ -191,6 +206,73 @@ class Endboss extends MovableObject {
     } else {
       this.x = this.isMovingForward ? this.startX - this.patrolDistance : this.startX;
       this.isMovingForward = !this.isMovingForward;
+    }
+  }
+
+  /**
+   * Updates the endboss jump movement.
+   */
+  updateJump() {
+    if (this.shouldStartJump()) {
+      this.startJump();
+    }
+    if (this.isJumping) {
+      this.y -= this.jumpSpeedY;
+      this.jumpSpeedY -= this.jumpGravity;
+      this.landAfterJump();
+    }
+  }
+
+  /**
+   * Checks whether the endboss should start a jump.
+   * @returns {boolean} Result of the check.
+   */
+  shouldStartJump() {
+    return (
+      !this.isJumping &&
+      !this.isDead() &&
+      !this.isHurt() &&
+      !this.isAttacking() &&
+      new Date().getTime() - this.lastJumpTime > this.jumpDelay
+    );
+  }
+
+  /**
+   * Starts a jump movement.
+   */
+  startJump() {
+    this.isJumping = true;
+    this.jumpSpeedY = this.jumpStrength;
+  }
+
+  /**
+   * Stops the jump when the endboss reaches the ground again.
+   */
+  landAfterJump() {
+    if (this.y < this.baseY) {
+      return;
+    }
+    this.y = this.baseY;
+    this.isJumping = false;
+    this.lastJumpTime = new Date().getTime();
+  }
+
+  /**
+   * Changes the patrol speed between slow and fast.
+   */
+  updatePatrolSpeed() {
+    if (this.isSpeedingUp) {
+      this.speed += this.speedChange;
+    } else {
+      this.speed -= this.speedChange;
+    }
+
+    if (this.speed >= this.maxSpeed) {
+      this.speed = this.maxSpeed;
+      this.isSpeedingUp = false;
+    } else if (this.speed <= this.minSpeed) {
+      this.speed = this.minSpeed;
+      this.isSpeedingUp = true;
     }
   }
 
