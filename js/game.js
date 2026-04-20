@@ -348,6 +348,7 @@ function handleKeyDown(event) {
   if (isHowToPlayOpen()) {
     return;
   }
+  preventGameKeyScroll(event);
   setKeyboardState(event.keyCode, true);
   if (event.keyCode == 13) {
     startGame();
@@ -367,7 +368,28 @@ function isHowToPlayOpen() {
  * @param {Event} event - Input event.
  */
 function handleKeyUp(event) {
+  preventGameKeyScroll(event);
   setKeyboardState(event.keyCode, false);
+}
+
+/**
+ * Prevents browser scrolling for game control keys.
+ * @param {KeyboardEvent} event - Keyboard event.
+ */
+function preventGameKeyScroll(event) {
+  if (resolveKeyboardKey(event.keyCode)) {
+    event.preventDefault();
+  }
+}
+
+/**
+ * Prevents desktop wheel scrolling on the game page.
+ * @param {WheelEvent} event - Wheel event.
+ */
+function preventGameWheelScroll(event) {
+  if (!isHowToPlayOpen()) {
+    event.preventDefault();
+  }
 }
 
 /**
@@ -401,3 +423,4 @@ function resolveKeyboardKey(keyCode) {
 
 window.addEventListener("keydown", handleKeyDown);
 window.addEventListener("keyup", handleKeyUp);
+window.addEventListener("wheel", preventGameWheelScroll, { passive: false });
