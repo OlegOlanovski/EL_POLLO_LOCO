@@ -4,7 +4,7 @@ class Level {
   backgroundObjects;
   bottles;
   coins;
-  level_end_x = 2200;
+  level_end_x = 2400;
 
   /**
    * Creates a new instance and initializes its default state.

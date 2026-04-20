@@ -16,6 +16,7 @@ class World {
   maxCoins = 5;
   gameFinished = false;
   enemyCollisionDamage = 20;
+  endbossCollisionDamage = 40;
   endbossBottleDamage = 20;
   enemyDamageCooldown = 500;
   deadChickenRemoveDelay = 1000;
@@ -239,7 +240,7 @@ class World {
     if (enemy instanceof Chicken && this.isJumpingOnEnemy(enemy)) {
       this.killChicken(enemy);
     } else if (this.canTakeEnemyDamage()) {
-      this.damageCharacter();
+      this.damageCharacter(enemy);
     }
   }
 
@@ -260,13 +261,25 @@ class World {
     return new Date().getTime() - this.lastEnemyDamage > this.enemyDamageCooldown;
   }
 
-  /** Damages the character and updates the health bar. */
-  damageCharacter() {
+  /**
+   * Damages the character and updates the health bar.
+   * @param {MovableObject} enemy - Enemy that caused the damage.
+   */
+  damageCharacter(enemy) {
     this.lastEnemyDamage = new Date().getTime();
     this.character.playDamageSound();
-    this.character.hit(this.enemyCollisionDamage);
+    this.character.hit(this.getEnemyCollisionDamage(enemy));
     this.statusBar.setPercentage(this.character.energy); // Updates the status bar with the character's current energy.
     this.checkCharacterDefeated();
+  }
+
+  /**
+   * Returns collision damage for the given enemy type.
+   * @param {MovableObject} enemy - Enemy that caused the damage.
+   * @returns {number} Damage amount.
+   */
+  getEnemyCollisionDamage(enemy) {
+    return enemy instanceof Endboss ? this.endbossCollisionDamage : this.enemyCollisionDamage;
   }
 
   /** Checks whether the character was defeated. */

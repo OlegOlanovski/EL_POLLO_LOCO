@@ -193,7 +193,7 @@ class Endboss extends MovableObject {
    * Moves the endboss along its patrol path.
    */
   patrol() {
-    if (this.isDead() || this.isHurt() || this.isAttacking()) { // Endboss does not move while dead, hurt, or attacking.
+    if (this.isDead() || this.isAttacking()) { // Endboss does not move while dead or attacking.
       return;
     }
 
