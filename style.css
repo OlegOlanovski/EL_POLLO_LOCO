@@ -139,6 +139,11 @@ canvas {
   margin-bottom: 24px;
 }
 
+.final-screen .start-button {
+  padding: 8px 16px;
+  font-size: 18px;
+}
+
 .lose-screen {
   background-image: url("img/You won, you lost/You lost.png");
 }
@@ -148,6 +153,10 @@ canvas {
 }
 
 .start-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
   margin-top: 24px;
 }
 
@@ -636,6 +645,11 @@ canvas {
     font-size: 20px;
   }
 
+  .final-screen .start-button {
+    padding: 7px 14px;
+    font-size: 16px;
+  }
+
   .how-to-play-button {
     top: 8px;
     left: 8px;
@@ -827,6 +841,11 @@ canvas {
   .start-button {
     padding: 8px 16px;
     font-size: 18px;
+  }
+
+  .final-screen .start-button {
+    padding: 6px 12px;
+    font-size: 15px;
   }
 
   .how-to-play-button {

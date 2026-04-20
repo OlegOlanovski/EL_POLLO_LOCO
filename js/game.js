@@ -4,6 +4,7 @@ let keyboard = new Keyboard();
 let startScreen;
 let startButton;
 let restartButton;
+let quickRestartButton;
 let gameContainer;
 let fullscreenButton;
 let fullscreenExitButton;
@@ -14,6 +15,7 @@ let howToPlayButton;
 let howToPlayCloseButton;
 let muteButton;
 let backgroundMusic = new Audio("audio/game-sound.mp3");
+const AUTO_RESTART_STORAGE_KEY = "elPolloLocoAutoRestart";
 
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.3;
@@ -26,6 +28,7 @@ function init() {
   startScreen = document.getElementById("startScreen");
   startButton = document.getElementById("startButton");
   restartButton = document.getElementById("restartButton");
+  quickRestartButton = document.getElementById("quickRestartButton");
   gameContainer = document.querySelector(".game-container");
   fullscreenButton = document.getElementById("fullscreenButton");
   fullscreenExitButton = document.getElementById("fullscreenExitButton");
@@ -40,6 +43,7 @@ function init() {
   updateMuteButton(muteButton);
   bindHowToPlayDialog();
   bindMobileControls();
+  startGameAfterRestart();
 }
 
 /**
@@ -59,6 +63,7 @@ function startGame() {
   initLevel();
   startScreen?.classList.add("d-none");
   restartButton?.classList.add("d-none");
+  quickRestartButton?.classList.add("d-none");
   closeHowToPlay();
   playBackgroundMusic();
   world = new World(canvas, keyboard);
@@ -88,6 +93,7 @@ function showWinScreen() {
   startScreen?.classList.add("win-screen");
   startButton?.classList.add("d-none");
   restartButton?.classList.remove("d-none");
+  quickRestartButton?.classList.remove("d-none");
 }
 
 /**
@@ -101,6 +107,7 @@ function showLoseScreen() {
   startScreen?.classList.add("lose-screen");
   startButton?.classList.add("d-none");
   restartButton?.classList.remove("d-none");
+  quickRestartButton?.classList.remove("d-none");
 
   setTimeout(() => {
     showGameOverScreen();
@@ -114,6 +121,7 @@ function showGameOverScreen() {
   startScreen?.classList.remove("lose-screen");
   startScreen?.classList.add("game-over-screen");
   restartButton?.classList.remove("d-none");
+  quickRestartButton?.classList.remove("d-none");
 }
 
 /**
@@ -121,6 +129,25 @@ function showGameOverScreen() {
  */
 function resetToStartScreen() {
   window.location.reload();
+}
+
+/**
+ * Reloads the page and starts a fresh game immediately.
+ */
+function restartGame() {
+  sessionStorage.setItem(AUTO_RESTART_STORAGE_KEY, "true");
+  window.location.reload();
+}
+
+/**
+ * Starts the game after a restart reload.
+ */
+function startGameAfterRestart() {
+  if (sessionStorage.getItem(AUTO_RESTART_STORAGE_KEY) !== "true") {
+    return;
+  }
+  sessionStorage.removeItem(AUTO_RESTART_STORAGE_KEY);
+  startGame();
 }
 
 /**
