@@ -5,7 +5,7 @@ class ThrowableObject extends MovableObject {
     splashAnimationIntervalId;
     splashFrameDuration = 80;
     groundY = 350;
-    throwSpeedY = 20;
+    throwSpeedY = 9;
     throwSpeedX = 8;
     isFinished = false;
 

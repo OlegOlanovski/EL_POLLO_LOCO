@@ -298,7 +298,7 @@ class World {
   killChicken(chicken) {
     chicken.die();
     this.character.playAttackSound();
-    this.character.speedY = 20;
+    this.character.speedY = this.character.enemyBounceSpeedY;
     this.removeChickenAfterDelay(chicken);
   }
 

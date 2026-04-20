@@ -2,7 +2,9 @@ class MovableObject extends DrawableObjekt {
   speed = 0.15;
   otherDirection = false;
   speedY = 0;
-  acceleration = 2.5;
+  acceleration = 0.45;
+  groundY = 180;
+  gravityFrameRate = 1000 / 60;
   energy = 100;
   lastHit = 0;
   lastY = 0;
@@ -22,8 +24,17 @@ class MovableObject extends DrawableObjekt {
         this.lastY = this.y;
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
+        this.stopAtGround();
       }
-    }, 1000 / 25);
+    }, this.gravityFrameRate);
+  }
+
+  /** Stops falling exactly on the ground instead of overshooting it. */
+  stopAtGround() {
+    if (!this.isAboveGround() && this.speedY < 0) {
+      this.y = this.getGroundY();
+      this.speedY = 0;
+    }
   }
 
   /**
@@ -47,12 +58,15 @@ class MovableObject extends DrawableObjekt {
    * @returns {boolean} Result of the check.
    */
   isAboveGround() {
-    if (this instanceof ThrowableObject) { // Throwable objects cannot fall below the ground.
-      return true;
-    } else {
-      return this.y < 180; // Other objects are above ground when y is below 180.
-    }
+    return this.y < this.getGroundY();
+  }
 
+  /**
+   * Returns the vertical ground position for this object.
+   * @returns {number} Ground y-coordinate.
+   */
+  getGroundY() {
+    return this.groundY;
   }
 
   // Checks whether this object collides with another movable object.
@@ -132,6 +146,6 @@ class MovableObject extends DrawableObjekt {
    * Starts a jump movement.
    */
   jump() {
-    this.speedY = 30; // Jumping speed
+    this.speedY = 13; // Jumping speed
   }
 }

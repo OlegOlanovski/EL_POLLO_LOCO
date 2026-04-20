@@ -3,6 +3,8 @@ class Character extends MovableObject {
   height = 240;
   y = 85;
   speed = 10;
+  jumpSpeedY = 13;
+  enemyBounceSpeedY = 9;
   hurtDuration = 0.4;
   IMAGE_IDLE = "img/2_character_pepe/1_idle/idle/I-1.png";
   sleepDelay = 15000;
@@ -178,7 +180,7 @@ class Character extends MovableObject {
     } else if (this.isHurt()) {
       this.playAnimationOnceChanged(this.IMAGES_HURT, "hurt");
     } else if (this.isAboveGround()) {
-      this.playAnimationOnceChanged(this.IMAGES_JUMPING, "jumping");
+      this.playJumpAnimation();
     } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
       this.playAnimationOnceChanged(this.IMAGES_WALKING, "walking");
     } else if (this.isSleeping()) {
@@ -199,6 +201,29 @@ class Character extends MovableObject {
       this.currentImage = 0;
     }
     this.playAnimation(images);
+  }
+
+  /** Plays a jump frame that matches the character's current jump phase. */
+  playJumpAnimation() {
+    this.currentAnimation = "jumping";
+    let frameIndex = this.getJumpFrameIndex();
+    let path = this.IMAGES_JUMPING[frameIndex];
+    this.img = this.imageCache[path];
+  }
+
+  /**
+   * Returns the jump animation frame for the current height and direction.
+   * @returns {number} Jump frame index.
+   */
+  getJumpFrameIndex() {
+    let maxJumpHeight = (this.jumpSpeedY * this.jumpSpeedY) / (2 * this.acceleration);
+    let heightProgress = (this.getGroundY() - this.y) / maxJumpHeight;
+    heightProgress = Math.max(0, Math.min(1, heightProgress));
+
+    let jumpProgress = this.speedY >= 0
+      ? heightProgress * 0.5
+      : 0.5 + (1 - heightProgress) * 0.5;
+    return Math.min(this.IMAGES_JUMPING.length - 1, Math.floor(jumpProgress * this.IMAGES_JUMPING.length));
   }
 
   /**
@@ -230,7 +255,7 @@ class Character extends MovableObject {
    * Starts a jump movement.
    */
   jump() {
-    this.speedY = 30; // Jumping speed
+    this.speedY = this.jumpSpeedY;
     this.jumping_sound.currentTime = 0;
     this.jumping_sound.play();
     clearTimeout(this.jumping_sound_timeout);
