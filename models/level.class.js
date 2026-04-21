@@ -21,4 +21,18 @@ class Level {
     this.bottles = bottles;
     this.coins = coins;
   }
+
+  /**
+   * Returns the world-space end position of the background.
+   * @returns {number} Rightmost background edge.
+   */
+  getBackgroundEndX() {
+    if (!this.backgroundObjects.length) {
+      return this.level_end_x;
+    }
+
+    return this.backgroundObjects.reduce((maxX, backgroundObject) => {
+      return Math.max(maxX, backgroundObject.x + backgroundObject.width);
+    }, this.level_end_x);
+  }
 }

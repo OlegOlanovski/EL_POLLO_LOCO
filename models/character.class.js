@@ -168,7 +168,17 @@ class Character extends MovableObject {
    * Updates the camera position to follow the character.
    */
   updateCamera() {
-    this.world.camera_x = -this.x + 100; // Camera follows the character.
+    let targetCameraX = -this.x + 100;
+    let maxCameraX = 100;
+    let minCameraX = Math.min(
+      maxCameraX,
+      this.world.canvas.width - this.world.level.getBackgroundEndX()
+    );
+
+    this.world.camera_x = Math.max(
+      minCameraX,
+      Math.min(maxCameraX, targetCameraX)
+    );
   }
 
   /**
