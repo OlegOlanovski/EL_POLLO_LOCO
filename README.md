@@ -48,3 +48,7 @@ Some graphic assets were provided by Developer Akademie. Sounds and additional a
 ## Author
 
 Oleg Olanovski
+
+![El Pollo Loco ](img/9_intro_outro_screens/start/startscreen_1.png)
+
+
