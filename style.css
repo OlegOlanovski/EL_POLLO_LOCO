@@ -561,8 +561,8 @@ canvas {
   .start-screen.d-none ~ .mute-button {
     top: 8px;
     bottom: auto;
-    left: calc(50% - 22px);
-    transform: translateX(-100%);
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .start-screen.d-none ~ .mobile-fullscreen-button {
@@ -629,10 +629,28 @@ canvas {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 24px;
+    padding: 24px 24px 88px;
     background-image: url("img/desert.jpg");
     background-position: center;
     background-size: cover;
+  }
+
+  body:not(.legal-page) .site-footer {
+    position: fixed;
+    right: 16px;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    left: 16px;
+    z-index: 110;
+    margin-top: 0;
+  }
+
+  body:not(.legal-page) .site-footer .fullscreen-button {
+    display: none;
+  }
+
+  body:not(.legal-page) .site-footer a {
+    padding: 8px 18px;
+    font-size: 16px;
   }
 }
 
@@ -1065,7 +1083,69 @@ canvas {
   }
 }
 
+body.phone-immersive:not(.legal-page) {
+  justify-content: flex-start;
+  padding: 0;
+  background: black;
+}
+
+body.phone-immersive h1,
+body.phone-immersive .site-footer,
+body.phone-immersive #startControls {
+  display: none;
+}
+
+body.phone-immersive .game-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  aspect-ratio: auto;
+}
+
+body.phone-immersive canvas,
+body.phone-immersive .start-screen {
+  width: 100%;
+  height: 100%;
+}
+
+body.phone-immersive .start-screen:not(.final-screen) {
+  justify-content: center;
+}
+
+body.phone-immersive .start-screen:not(.final-screen) .start-actions {
+  margin-top: 0;
+}
+
+body.phone-immersive .start-screen.d-none ~ .mute-button {
+  top: 8px;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+body.phone-immersive .start-screen.d-none ~ .mobile-fullscreen-button {
+  top: 8px;
+  left: 48px;
+}
+
+body.phone-immersive .fullscreen-exit-button:not(.d-none) {
+  top: 8px;
+  right: 8px;
+  bottom: auto;
+}
+
+body.phone-immersive .mobile-controls {
+  right: 10px;
+  bottom: 10px;
+  left: 10px;
+}
+
 @supports (height: 100dvh) {
+  body.phone-immersive .game-container {
+    height: 100dvh;
+  }
+
   @media (min-aspect-ratio: 1/1) and (max-height: 760px) {
     .game-container {
       width: min(calc(100vw - 16px), calc(150dvh - 90px));

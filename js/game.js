@@ -43,6 +43,7 @@ function init() {
   updateMuteButton(muteButton);
   bindHowToPlayDialog();
   bindMobileControls();
+  updatePhoneViewportMode();
 }
 
 /**
@@ -290,6 +291,16 @@ function isPhoneSizedTouchDevice() {
 }
 
 /**
+ * Toggles the immersive mobile-phone layout for landscape gameplay.
+ */
+function updatePhoneViewportMode() {
+  document.body.classList.toggle(
+    "phone-immersive",
+    isPhoneSizedTouchDevice() && !isMobilePortrait()
+  );
+}
+
+/**
  * Checks whether gameplay should pause because of orientation.
  * @returns {boolean} Result of the check.
  */
@@ -313,6 +324,7 @@ function releaseKeyboard() {
  * Releases controls when the viewport switches to blocked portrait mode.
  */
 function handleOrientationChange() {
+  updatePhoneViewportMode();
   if (isMobilePortrait()) {
     releaseKeyboard();
   }
