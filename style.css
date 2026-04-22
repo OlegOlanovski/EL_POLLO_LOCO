@@ -119,6 +119,10 @@ canvas {
   background-position: center;
 }
 
+.mobile-start-impressum {
+  display: none;
+}
+
 .start-controls {
   display: flex;
   flex-wrap: wrap;
@@ -193,7 +197,7 @@ canvas {
   top: 8px;
   left: 8px;
   z-index: 30;
-  display: grid;
+  display: none;
   place-items: center;
   width: 34px;
   height: 34px;
@@ -565,6 +569,43 @@ canvas {
 }
 
 @media (max-width: 760px), (min-aspect-ratio: 1/1) and (max-height: 760px) {
+  .how-to-play-button {
+    display: grid;
+  }
+
+  .start-screen:not(.final-screen) {
+    justify-content: flex-start;
+    padding-top: max(16px, env(safe-area-inset-top));
+  }
+
+  .start-screen:not(.final-screen) .start-actions {
+    margin-top: 0;
+  }
+
+  .start-screen:not(.d-none):not(.final-screen) .mobile-start-impressum {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    z-index: 30;
+    display: inline-block;
+    padding: 6px 14px;
+    border: 2px solid #7a2f00;
+    border-radius: 8px;
+    background-color: #ffcf43;
+    color: #4a1d00;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1.2;
+    text-decoration: none;
+    touch-action: manipulation;
+  }
+
+  .start-screen:not(.d-none):not(.final-screen) .mobile-start-impressum:hover,
+  .start-screen:not(.d-none):not(.final-screen) .mobile-start-impressum:active {
+    background-color: #ffb72b;
+  }
+
   .start-screen.d-none ~ .mute-button {
     top: 8px;
     bottom: auto;
@@ -656,8 +697,7 @@ canvas {
   }
 
   body:not(.legal-page) .site-footer a {
-    padding: 8px 18px;
-    font-size: 16px;
+    display: none;
   }
 }
 
@@ -1117,7 +1157,8 @@ body.phone-immersive .start-screen {
 }
 
 body.phone-immersive .start-screen:not(.final-screen) {
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: max(16px, env(safe-area-inset-top));
 }
 
 body.phone-immersive .start-screen:not(.final-screen) .start-actions {
