@@ -91,7 +91,7 @@ class Endboss extends MovableObject {
    * Starts the movement animation interval.
    */
   animateMovement() {
-    setInterval(() => {
+    this.registerInterval(() => {
       if (this.isGamePaused()) {
         return;
       }
@@ -105,7 +105,7 @@ class Endboss extends MovableObject {
    * Starts the image animation interval.
    */
   animateImages() {
-    setInterval(() => {
+    this.registerInterval(() => {
       if (this.isGamePaused()) {
         return;
       }
@@ -322,5 +322,10 @@ class Endboss extends MovableObject {
    */
   getCharacterCenterX() {
     return this.world.character.x + this.world.character.width / 2;
+  }
+
+  /** Stops all running timers and audio for the endboss. */
+  destroy() {
+    super.destroy();
   }
 }

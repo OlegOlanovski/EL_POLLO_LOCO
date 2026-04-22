@@ -21,7 +21,7 @@ class Cloud extends MovableObject {
    * Starts the animation intervals.
    */
   animate() {
-    setInterval(() => {
+    this.registerInterval(() => {
       if (this.isGamePaused()) {
         return;
       }
@@ -31,5 +31,10 @@ class Cloud extends MovableObject {
         this.x = this.resetX + Math.random() * 300;
       }
     }, 1000 / 60);
+  }
+
+  /** Stops all running timers for this cloud. */
+  destroy() {
+    super.destroy();
   }
 }

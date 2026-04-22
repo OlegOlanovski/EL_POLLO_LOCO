@@ -15,7 +15,7 @@ let howToPlayButton;
 let howToPlayCloseButton;
 let muteButton;
 let backgroundMusic = new Audio("audio/game-sound.mp3");
-const AUTO_RESTART_STORAGE_KEY = "elPolloLocoAutoRestart";
+let gameOverScreenTimeoutId;
 
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.3;
@@ -43,7 +43,6 @@ function init() {
   updateMuteButton(muteButton);
   bindHowToPlayDialog();
   bindMobileControls();
-  startGameAfterRestart();
 }
 
 /**
@@ -109,7 +108,8 @@ function showLoseScreen() {
   restartButton?.classList.remove("d-none");
   quickRestartButton?.classList.remove("d-none");
 
-  setTimeout(() => {
+  clearTimeout(gameOverScreenTimeoutId);
+  gameOverScreenTimeoutId = setTimeout(() => {
     showGameOverScreen();
   }, 2500);
 }
@@ -125,29 +125,54 @@ function showGameOverScreen() {
 }
 
 /**
- * Reloads the page to reset the game.
+ * Resets the current game and returns to the start screen.
  */
 function resetToStartScreen() {
-  window.location.reload();
+  resetGameState();
 }
 
 /**
- * Reloads the page and starts a fresh game immediately.
+ * Resets the current game and starts a fresh round immediately.
  */
 function restartGame() {
-  sessionStorage.setItem(AUTO_RESTART_STORAGE_KEY, "true");
-  window.location.reload();
+  resetGameState();
+  startGame();
 }
 
 /**
- * Starts the game after a restart reload.
+ * Clears the current game instance and restores the default UI state.
  */
-function startGameAfterRestart() {
-  if (sessionStorage.getItem(AUTO_RESTART_STORAGE_KEY) !== "true") {
-    return;
-  }
-  sessionStorage.removeItem(AUTO_RESTART_STORAGE_KEY);
-  startGame();
+function resetGameState() {
+  clearTimeout(gameOverScreenTimeoutId);
+  gameOverScreenTimeoutId = null;
+  releaseKeyboard();
+  stopWorldAudio();
+  stopBackgroundMusic();
+  world?.destroy();
+  world = null;
+  resetStartScreenState();
+}
+
+/**
+ * Stops all audio objects that belong to the current world.
+ */
+function stopWorldAudio() {
+  collectWorldAudio(world).forEach((audio) => {
+    audio.pause();
+    audio.currentTime = 0;
+  });
+}
+
+/**
+ * Restores the start screen layout and clears final-screen modifiers.
+ */
+function resetStartScreenState() {
+  canvas?.classList.remove("d-none");
+  startScreen?.classList.remove("d-none", "final-screen", "win-screen", "lose-screen", "game-over-screen");
+  startButton?.classList.remove("d-none");
+  restartButton?.classList.add("d-none");
+  quickRestartButton?.classList.add("d-none");
+  closeHowToPlay();
 }
 
 /**

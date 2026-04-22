@@ -42,7 +42,7 @@ class ThrowableObject extends MovableObject {
     trow() {
         this.speedY = this.throwSpeedY;
         this.applyGravity();
-        this.throwIntervalId = setInterval(() => {
+        this.throwIntervalId = this.registerInterval(() => {
             if (this.isGamePaused()) {
                 return;
             }
@@ -97,7 +97,8 @@ class ThrowableObject extends MovableObject {
     prepareSplash() {
         this.isSplashing = true;
         this.speedY = 0;
-        clearInterval(this.throwIntervalId);
+        this.clearRegisteredInterval(this.throwIntervalId);
+        this.throwIntervalId = null;
         this.stopGravity();
         this.currentImage = 0;
         this.playAnimation(this.IMAGES_SPLASH);
@@ -108,7 +109,7 @@ class ThrowableObject extends MovableObject {
      * @param {Function} callback - Optional function called after the animation finishes.
      */
     startSplashAnimation(callback) {
-        this.splashAnimationIntervalId = setInterval(() => {
+        this.splashAnimationIntervalId = this.registerInterval(() => {
             if (this.isGamePaused()) {
                 return;
             }
@@ -127,11 +128,22 @@ class ThrowableObject extends MovableObject {
      * @param {Function} callback - Optional function called after the animation finishes.
      */
     finishSplashAnimation(callback) {
-        clearInterval(this.splashAnimationIntervalId);
+        this.clearRegisteredInterval(this.splashAnimationIntervalId);
+        this.splashAnimationIntervalId = null;
         this.isFinished = true;
         if (callback) {
             callback();
         }
+    }
+
+    /** Stops all running timers for this throwable object. */
+    destroy() {
+        this.clearRegisteredInterval(this.throwIntervalId);
+        this.throwIntervalId = null;
+        this.clearRegisteredInterval(this.splashAnimationIntervalId);
+        this.splashAnimationIntervalId = null;
+        this.isFinished = true;
+        super.destroy();
     }
 
 }

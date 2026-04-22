@@ -38,7 +38,7 @@ class Chicken extends MovableObject {
    * Starts the movement animation interval.
    */
   animateMovement() {
-    setInterval(() => {
+    this.registerInterval(() => {
       if (this.isGamePaused()) {
         return;
       }
@@ -53,7 +53,7 @@ class Chicken extends MovableObject {
    * Starts the image animation interval.
    */
   animateImages() {
-    setInterval(() => {
+    this.registerInterval(() => {
       if (this.isGamePaused()) {
         return;
       }
@@ -70,6 +70,11 @@ class Chicken extends MovableObject {
   die() {
     this.dead = true;
     this.img = this.imageCache[this.IMAGE_DEAD];
+  }
+
+  /** Stops all running timers for this chicken. */
+  destroy() {
+    super.destroy();
   }
 }
 

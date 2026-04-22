@@ -10,12 +10,13 @@ class MovableObject extends DrawableObjekt {
   lastY = 0;
   hurtDuration = 1;
   gravityIntervalId;
+  intervalIds = [];
 
   /**
    * Applies gravity to the movable object.
    */
   applyGravity() {
-    this.gravityIntervalId = setInterval(() => {
+    this.gravityIntervalId = this.registerInterval(() => {
       if (this.isGamePaused()) {
         return;
       }
@@ -27,6 +28,37 @@ class MovableObject extends DrawableObjekt {
         this.stopAtGround();
       }
     }, this.gravityFrameRate);
+  }
+
+  /**
+   * Starts and tracks one interval.
+   * @param {Function} callback - Interval callback.
+   * @param {number} delay - Interval delay in milliseconds.
+   * @returns {number} Interval identifier.
+   */
+  registerInterval(callback, delay) {
+    let intervalId = setInterval(callback, delay);
+    this.intervalIds.push(intervalId);
+    return intervalId;
+  }
+
+  /**
+   * Clears one tracked interval.
+   * @param {number} intervalId - Interval identifier.
+   */
+  clearRegisteredInterval(intervalId) {
+    if (!intervalId) {
+      return;
+    }
+    clearInterval(intervalId);
+    this.intervalIds = this.intervalIds.filter((id) => id !== intervalId);
+  }
+
+  /** Clears all tracked intervals. */
+  clearAllIntervals() {
+    this.intervalIds.forEach((intervalId) => clearInterval(intervalId));
+    this.intervalIds = [];
+    this.gravityIntervalId = null;
   }
 
   /** Stops falling exactly on the ground instead of overshooting it. */
@@ -49,8 +81,24 @@ class MovableObject extends DrawableObjekt {
    * Stops the gravity interval.
    */
   stopGravity() {
-    clearInterval(this.gravityIntervalId);
+    this.clearRegisteredInterval(this.gravityIntervalId);
     this.gravityIntervalId = null;
+  }
+
+  /** Stops all media objects that belong to this instance. */
+  stopAudio() {
+    Object.values(this).forEach((value) => {
+      if (value instanceof HTMLMediaElement) {
+        value.pause();
+        value.currentTime = 0;
+      }
+    });
+  }
+
+  /** Cleans up all active timers and audio on this instance. */
+  destroy() {
+    this.clearAllIntervals();
+    this.stopAudio();
   }
 
   /**

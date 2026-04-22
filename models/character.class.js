@@ -116,7 +116,7 @@ class Character extends MovableObject {
    * Starts the movement animation interval.
    */
   animateMovement() {
-    setInterval(() => {
+    this.registerInterval(() => {
       if (!this.world || this.isGamePaused()) {
         return;
       }
@@ -132,7 +132,7 @@ class Character extends MovableObject {
    * Starts the image animation interval.
    */
   animateImages() {
-    setInterval(() => {
+    this.registerInterval(() => {
       if (!this.world || this.isGamePaused()) {
         return;
       }
@@ -313,5 +313,12 @@ class Character extends MovableObject {
   playFireSound() {
     this.fire_sound.currentTime = 0;
     this.fire_sound.play();
+  }
+
+  /** Stops all running timers and audio for this character. */
+  destroy() {
+    clearTimeout(this.jumping_sound_timeout);
+    this.jumping_sound_timeout = null;
+    super.destroy();
   }
 }

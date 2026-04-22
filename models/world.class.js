@@ -21,6 +21,10 @@ class World {
   enemyDamageCooldown = 500;
   deadChickenRemoveDelay = 1000;
   lastEnemyDamage = 0;
+  destroyed = false;
+  drawAnimationFrameId;
+  updateIntervalId;
+  timeoutIds = [];
 
   /**
    * Creates a new instance and initializes its default state.
@@ -46,7 +50,7 @@ class World {
 
   /** Starts the recurring world update loop. */
   run() {
-    setInterval(() => {
+    this.updateIntervalId = setInterval(() => {
       if (this.isGamePaused()) {
         return;
       }
@@ -205,7 +209,7 @@ class World {
   checkEndbossDefeated(endboss) {
     if (endboss.isDead()) {
       this.gameFinished = true;
-      setTimeout(() => {
+      this.registerTimeout(() => {
         showWinScreen();
       }, 1000);
     }
@@ -286,7 +290,7 @@ class World {
   checkCharacterDefeated() {
     if (this.character.isDead()) {
       this.gameFinished = true;
-      setTimeout(() => {
+      this.registerTimeout(() => {
         showLoseScreen();
       }, 1000);
     }
@@ -329,7 +333,7 @@ class World {
    * @param {Chicken} chicken - Chicken to update or remove.
    */
   removeChickenAfterDelay(chicken) {
-    setTimeout(() => {
+    this.registerTimeout(() => {
       let index = this.level.enemies.indexOf(chicken);
       if (index > -1) {
         this.level.enemies.splice(index, 1);
@@ -339,6 +343,9 @@ class World {
 
   /** Draws the object on the canvas. */
   draw() {
+    if (this.destroyed) {
+      return;
+    }
     this.clearCanvas();
     this.drawMovableObjects();
     this.drawFixedObjects();
@@ -373,9 +380,49 @@ class World {
 
   /** Requests the next draw frame. */
   requestDrawFrame() {
-    requestAnimationFrame(() => {
+    this.drawAnimationFrameId = requestAnimationFrame(() => {
       this.draw();
     });
+  }
+
+  /**
+   * Starts and tracks one timeout.
+   * @param {Function} callback - Timeout callback.
+   * @param {number} delay - Timeout delay in milliseconds.
+   * @returns {number} Timeout identifier.
+   */
+  registerTimeout(callback, delay) {
+    let timeoutId = setTimeout(() => {
+      this.timeoutIds = this.timeoutIds.filter((id) => id !== timeoutId);
+      if (this.destroyed) {
+        return;
+      }
+      callback();
+    }, delay);
+    this.timeoutIds.push(timeoutId);
+    return timeoutId;
+  }
+
+  /** Stops all loops, timers and animated objects that belong to this world. */
+  destroy() {
+    if (this.destroyed) {
+      return;
+    }
+
+    this.destroyed = true;
+    clearInterval(this.updateIntervalId);
+    this.updateIntervalId = null;
+    cancelAnimationFrame(this.drawAnimationFrameId);
+    this.drawAnimationFrameId = null;
+    this.timeoutIds.forEach((timeoutId) => clearTimeout(timeoutId));
+    this.timeoutIds = [];
+    this.character?.destroy?.();
+    this.level?.enemies?.forEach((enemy) => enemy.destroy?.());
+    this.level?.clouds?.forEach((cloud) => cloud.destroy?.());
+    this.throwabbleObjects.forEach((throwableObject) => throwableObject.destroy?.());
+    this.throwabbleObjects = [];
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.clearCanvas();
   }
 
   /**
