@@ -503,6 +503,8 @@ canvas {
   display: none;
   justify-content: space-between;
   pointer-events: none;
+  -webkit-touch-callout: none;
+  user-select: none;
 }
 
 .mobile-control-group {
@@ -525,6 +527,9 @@ canvas {
   display: grid;
   place-items: center;
   touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .mobile-control-button:active {
@@ -535,6 +540,8 @@ canvas {
   width: 28px;
   height: 28px;
   display: block;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 .mobile-control-icon path {

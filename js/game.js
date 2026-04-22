@@ -351,9 +351,18 @@ function bindMobileControls() {
 function bindMobileControlButton(button) {
   let key = button.dataset.key;
   button.addEventListener("pointerdown", (event) => setMobileKey(event, key, true));
+  button.addEventListener("contextmenu", preventMobileControlContextMenu);
   ["pointerup", "pointerleave", "pointercancel"].forEach((eventName) => {
     bindMobileKeyRelease(button, eventName, key);
   });
+}
+
+/**
+ * Prevents the browser context menu on long-press for mobile controls.
+ * @param {Event} event - Input event.
+ */
+function preventMobileControlContextMenu(event) {
+  event.preventDefault();
 }
 
 /**
