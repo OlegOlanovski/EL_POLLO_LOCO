@@ -16,6 +16,8 @@ let howToPlayCloseButton;
 let muteButton;
 let backgroundMusic = new Audio("audio/game-sound.mp3");
 let gameOverScreenTimeoutId;
+const TOUCH_LAYOUT_BREAKPOINT = 1023;
+const PHONE_IMMERSIVE_BREAKPOINT = 760;
 
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.3;
@@ -272,9 +274,22 @@ function handleHowToPlayKeyDown(event) {
  */
 function isMobilePortrait() {
   return (
-    window.matchMedia("(max-width: 760px)").matches &&
+    window.matchMedia(`(max-width: ${PHONE_IMMERSIVE_BREAKPOINT}px)`).matches &&
     window.innerHeight > window.innerWidth
   );
+}
+
+/**
+ * Checks whether the device should use touch controls in the responsive layout.
+ * @returns {boolean} Result of the check.
+ */
+function isTouchLayoutDevice() {
+  let hasTouchInput = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  let hasTabletViewport = window.matchMedia(
+    `(max-width: ${TOUCH_LAYOUT_BREAKPOINT}px)`
+  ).matches;
+
+  return hasTouchInput && hasTabletViewport;
 }
 
 /**
@@ -282,18 +297,20 @@ function isMobilePortrait() {
  * @returns {boolean} Result of the check.
  */
 function isPhoneSizedTouchDevice() {
-  let hasTouchInput = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
   let hasPhoneViewport =
-    window.matchMedia("(max-width: 760px)").matches ||
-    window.matchMedia("(orientation: landscape) and (max-height: 760px)").matches;
+    window.matchMedia(`(max-width: ${PHONE_IMMERSIVE_BREAKPOINT}px)`).matches ||
+    window.matchMedia(
+      `(orientation: landscape) and (max-height: ${PHONE_IMMERSIVE_BREAKPOINT}px)`
+    ).matches;
 
-  return hasTouchInput && hasPhoneViewport;
+  return isTouchLayoutDevice() && hasPhoneViewport;
 }
 
 /**
  * Toggles the immersive mobile-phone layout for landscape gameplay.
  */
 function updatePhoneViewportMode() {
+  document.body.classList.toggle("touch-layout", isTouchLayoutDevice());
   document.body.classList.toggle(
     "phone-immersive",
     isPhoneSizedTouchDevice() && !isMobilePortrait()

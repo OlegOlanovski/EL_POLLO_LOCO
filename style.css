@@ -568,6 +568,36 @@ canvas {
   display: none;
 }
 
+body.touch-layout .how-to-play-button {
+  display: grid;
+}
+
+body.touch-layout .mobile-controls {
+  display: flex;
+}
+
+body.touch-layout .mobile-control-button {
+  min-width: 70px;
+  min-height: 52px;
+  padding: 10px 14px;
+}
+
+body.touch-layout .mobile-control-icon {
+  width: 32px;
+  height: 32px;
+}
+
+body.touch-layout #startControls {
+  display: none;
+}
+
+body.touch-layout .start-screen.d-none ~ .mute-button {
+  top: 8px;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 @media (max-width: 760px), (min-aspect-ratio: 1/1) and (max-height: 760px) {
   .how-to-play-button {
     display: grid;
