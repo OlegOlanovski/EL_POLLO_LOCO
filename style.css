@@ -603,6 +603,17 @@ body.touch-layout .start-screen.d-none ~ .mute-button {
     display: grid;
   }
 
+  body.touch-layout .mobile-control-button {
+    min-width: 50px;
+    min-height: 38px;
+    padding: 6px 8px;
+  }
+
+  body.touch-layout .mobile-control-icon {
+    width: 24px;
+    height: 24px;
+  }
+
   .start-screen:not(.final-screen) {
     justify-content: flex-start;
     padding-top: max(16px, env(safe-area-inset-top));
@@ -894,14 +905,16 @@ body.touch-layout .start-screen.d-none ~ .mute-button {
     height: 18px;
   }
 
-  .mobile-control-button {
+  .mobile-control-button,
+  body.touch-layout .mobile-control-button {
     min-width: 48px;
     min-height: 38px;
     padding: 6px 8px;
     font-size: 15px;
   }
 
-  .mobile-control-icon {
+  .mobile-control-icon,
+  body.touch-layout .mobile-control-icon {
     width: 24px;
     height: 24px;
   }
@@ -1020,14 +1033,16 @@ body.touch-layout .start-screen.d-none ~ .mute-button {
     height: 18px;
   }
 
-  .mobile-control-button {
+  .mobile-control-button,
+  body.touch-layout .mobile-control-button {
     min-width: 48px;
     min-height: 36px;
     padding: 6px 8px;
     font-size: 15px;
   }
 
-  .mobile-control-icon {
+  .mobile-control-icon,
+  body.touch-layout .mobile-control-icon {
     width: 24px;
     height: 24px;
   }
