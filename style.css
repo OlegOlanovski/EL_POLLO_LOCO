@@ -591,11 +591,61 @@ body.touch-layout #startControls {
   display: none;
 }
 
+body.touch-layout .site-footer .fullscreen-button {
+  display: none;
+}
+
+body.touch-layout .mobile-fullscreen-button {
+  display: grid;
+  place-items: center;
+}
+
+body.touch-layout .start-screen:not(.d-none) ~ .mobile-fullscreen-button {
+  top: auto;
+  bottom: 8px;
+  left: 48px;
+}
+
+body.touch-layout .start-screen.d-none ~ .mobile-fullscreen-button {
+  top: 8px;
+  bottom: auto;
+  left: calc(50% + 24px);
+}
+
 body.touch-layout .start-screen.d-none ~ .mute-button {
   top: 8px;
   bottom: auto;
   left: 50%;
   transform: translateX(-50%);
+}
+
+body.touch-layout .fullscreen-exit-button:not(.d-none) {
+  top: 8px;
+  right: auto;
+  bottom: auto;
+  left: calc(50% + 24px);
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+}
+
+body.touch-layout .start-screen:not(.d-none) ~ .fullscreen-exit-button:not(.d-none) {
+  top: auto;
+  right: auto;
+  bottom: 8px;
+  left: 48px;
+}
+
+body.touch-layout .fullscreen-exit-text {
+  display: none;
+}
+
+body.touch-layout .fullscreen-exit-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
 }
 
 @media (max-width: 760px), (min-aspect-ratio: 1/1) and (max-height: 760px) {
