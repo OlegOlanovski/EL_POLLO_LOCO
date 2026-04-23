@@ -16,7 +16,7 @@ let howToPlayCloseButton;
 let muteButton;
 let backgroundMusic = new Audio("audio/game-sound.mp3");
 let gameOverScreenTimeoutId;
-const TOUCH_LAYOUT_BREAKPOINT = 1023;
+const TOUCH_LAYOUT_BREAKPOINT = 1366;
 const PHONE_IMMERSIVE_BREAKPOINT = 760;
 
 backgroundMusic.loop = true;
@@ -269,14 +269,11 @@ function handleHowToPlayKeyDown(event) {
 }
 
 /**
- * Checks whether the viewport is a blocked mobile portrait layout.
+ * Checks whether the viewport is a blocked touch-device portrait layout.
  * @returns {boolean} Result of the check.
  */
 function isMobilePortrait() {
-  return (
-    window.matchMedia(`(max-width: ${PHONE_IMMERSIVE_BREAKPOINT}px)`).matches &&
-    window.innerHeight > window.innerWidth
-  );
+  return isTouchLayoutDevice() && window.innerHeight > window.innerWidth;
 }
 
 /**

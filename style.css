@@ -690,7 +690,7 @@ body.touch-layout .start-screen.d-none ~ .mute-button {
   }
 }
 
-@media (max-aspect-ratio: 999/1000) and (max-width: 760px) {
+@media (hover: none) and (pointer: coarse) and (max-aspect-ratio: 999/1000) and (max-width: 1366px) {
   html:not(.legal-document),
   body:not(.legal-page) {
     height: 100vh;
